@@ -20,6 +20,8 @@ package ca.uhn.fhir.jpa.entity;
  * #L%
  */
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -44,11 +46,11 @@ public class SearchResult implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="SEQ_SEARCH_RES")
-	@SequenceGenerator(name="SEQ_SEARCH_RES", sequenceName="SEQ_SEARCH_RES")
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Id
 	@Column(name = "PID")
-	private Long myId;
+	private String myId;
 
 	@Column(name="SEARCH_ORDER", nullable=false)
 	private int myOrder;
