@@ -37,13 +37,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 
 //@formatter:off
 @Embeddable
@@ -52,7 +45,6 @@ import org.hibernate.search.annotations.Store;
 	@Index(name = "IDX_SP_STRING", columnList = "RES_TYPE,SP_NAME,SP_VALUE_NORMALIZED"), 
 	@Index(name = "IDX_SP_STRING_RESID", columnList = "RES_ID") 
 })
-@Indexed()
 //@AnalyzerDefs({
 //	@AnalyzerDef(name = "autocompleteEdgeAnalyzer",
 //		tokenizer = @TokenizerDef(factory = PatternTokenizerFactory.class, params= {
@@ -114,16 +106,9 @@ public class ResourceIndexedSearchParamString extends BaseResourceIndexedSearchP
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "RES_ID", referencedColumnName="RES_ID", insertable=false, updatable=false)
-	@ContainedIn
 	private ResourceTable myResourceTable;
 
 	@Column(name = "SP_VALUE_EXACT", length = MAX_LENGTH, nullable = true)
-	@Fields({
-		@Field(name = "myValueText", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "standardAnalyzer")),
-		@Field(name = "myValueTextEdgeNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteEdgeAnalyzer")),
-		@Field(name = "myValueTextNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteNGramAnalyzer")),
-		@Field(name = "myValueTextPhonetic", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompletePhoneticAnalyzer"))
-	})
 	private String myValueExact;
 
 	@Column(name = "SP_VALUE_NORMALIZED", length = MAX_LENGTH, nullable = true)

@@ -72,13 +72,13 @@ public class BaseDstu2Config extends BaseConfig {
 		ca.uhn.fhir.jpa.dao.JpaValidationSupportDstu2 retVal = new ca.uhn.fhir.jpa.dao.JpaValidationSupportDstu2();
 		return retVal;
 	}
-
+/*
 	@Bean(autowire = Autowire.BY_TYPE)
 	public IFulltextSearchSvc searchDao() {
 		FulltextSearchSvcImpl searchDao = new FulltextSearchSvcImpl();
 		return searchDao;
 	}
-
+*/
 	@Bean(autowire = Autowire.BY_TYPE)
 	public SearchParamExtractorDstu2 searchParamExtractor() {
 		return new SearchParamExtractorDstu2();

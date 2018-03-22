@@ -52,34 +52,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.AnalyzerDefs;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TokenizerDef;
 
 import ca.uhn.fhir.jpa.entity.TermConceptParentChildLink.RelationshipTypeEnum;
-import ca.uhn.fhir.jpa.search.DeferConceptIndexingInterceptor;
 
 //@formatter:off
 @Entity
-@Indexed(interceptor=DeferConceptIndexingInterceptor.class)	
-@Table(name="TRM_CONCEPT", uniqueConstraints= {
-	@UniqueConstraint(name="IDX_CONCEPT_CS_CODE", columnNames= {"CODESYSTEM_PID", "CODE"})
-}, indexes= {
-	@Index(name = "IDX_CONCEPT_INDEXSTATUS", columnList="INDEX_STATUS") 
-})
-@AnalyzerDefs({
-	@AnalyzerDef(name = "conceptParentPidsAnalyzer",
-		tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-		filters = {
-		})
-})
 //@formatter:on
 public class TermConcept implements Serializable {
 	private static final int MAX_DESC_LENGTH = 400;
@@ -91,7 +68,6 @@ public class TermConcept implements Serializable {
 	private Collection<TermConceptParentChildLink> myChildren;
 
 	@Column(name = "CODE", length = 100, nullable = false)
-	@Fields({ @Field(name = "myCode", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "exactAnalyzer")), })
 	private String myCode;
 
 	@ManyToOne()
@@ -99,17 +75,10 @@ public class TermConcept implements Serializable {
 	private TermCodeSystemVersion myCodeSystem;
 
 	@Column(name = "CODESYSTEM_PID", insertable = false, updatable = false)
-	@Fields({ @Field(name = "myCodeSystemVersionPid") })
 	private long myCodeSystemVersionPid;
 
 	//@formatter:off
 	@Column(name="DISPLAY", length=MAX_DESC_LENGTH, nullable=true)
-	@Fields({
-		@Field(name = "myDisplay", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "standardAnalyzer")),
-		@Field(name = "myDisplayEdgeNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteEdgeAnalyzer")),
-		@Field(name = "myDisplayNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteNGramAnalyzer")),
-		@Field(name = "myDisplayPhonetic", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompletePhoneticAnalyzer"))
-	})
 	private String myDisplay;
 	//@formatter:on
 
@@ -123,7 +92,6 @@ public class TermConcept implements Serializable {
 	private Long myIndexStatus;
 
 	@Transient
-	@Field(name = "myParentPids", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "conceptParentPidsAnalyzer"))
 	private String myParentPids;
 
 	@OneToMany(cascade = {}, fetch = FetchType.LAZY, mappedBy = "myChild")

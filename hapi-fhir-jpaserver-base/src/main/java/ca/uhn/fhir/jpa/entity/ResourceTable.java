@@ -42,36 +42,11 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.StopFilterFactory;
-import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
-import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
-import org.apache.lucene.analysis.ngram.NGramFilterFactory;
-import org.apache.lucene.analysis.pattern.PatternTokenizerFactory;
-import org.apache.lucene.analysis.phonetic.PhoneticFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.AnalyzerDefs;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Parameter;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
-
-import ca.uhn.fhir.jpa.search.IndexNonDeletedInterceptor;
 import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.fhir.rest.server.Constants;
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
 //@formatter:off
-@Indexed(interceptor=IndexNonDeletedInterceptor.class)	
 @Entity
 @Table(name = "HFJ_RESOURCE", uniqueConstraints = {}, indexes= {
 	@Index(name = "IDX_RES_DATE", columnList="RES_UPDATED"), 
@@ -79,53 +54,6 @@ import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 	@Index(name = "IDX_RES_PROFILE", columnList="RES_PROFILE"),
 	@Index(name = "IDX_INDEXSTATUS", columnList="SP_INDEX_STATUS")
 })
-@AnalyzerDefs({
-	@AnalyzerDef(name = "autocompleteEdgeAnalyzer",
-		tokenizer = @TokenizerDef(factory = PatternTokenizerFactory.class, params= {
-			@Parameter(name="pattern", value="(.*)"),
-			@Parameter(name="group", value="1")
-		}),
-		filters = {
-			@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-			@TokenFilterDef(factory = StopFilterFactory.class),
-			@TokenFilterDef(factory = EdgeNGramFilterFactory.class, params = {
-				@Parameter(name = "minGramSize", value = "3"),
-				@Parameter(name = "maxGramSize", value = "50") 
-			}), 
-		}),
-	@AnalyzerDef(name = "autocompletePhoneticAnalyzer",
-		tokenizer = @TokenizerDef(factory=StandardTokenizerFactory.class),
-		filters = {
-			@TokenFilterDef(factory=StandardFilterFactory.class),
-			@TokenFilterDef(factory=StopFilterFactory.class),
-			@TokenFilterDef(factory=PhoneticFilterFactory.class, params = {
-				@Parameter(name="encoder", value="DoubleMetaphone")
-			}),
-			@TokenFilterDef(factory=SnowballPorterFilterFactory.class, params = {
-				@Parameter(name="language", value="English") 
-			})
-		}),
-	@AnalyzerDef(name = "autocompleteNGramAnalyzer",
-		tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-		filters = {
-			@TokenFilterDef(factory = WordDelimiterFilterFactory.class),
-			@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-			@TokenFilterDef(factory = NGramFilterFactory.class, params = {
-				@Parameter(name = "minGramSize", value = "3"),
-				@Parameter(name = "maxGramSize", value = "20") 
-			}),
-		}),
-	@AnalyzerDef(name = "standardAnalyzer",
-		tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-		filters = {
-			@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-		}),
-	@AnalyzerDef(name = "exactAnalyzer",
-		tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-		filters = {
-		})
-	}
-)
 //@formatter:on
 public class ResourceTable extends BaseHasResource implements Serializable {
 	private static final int MAX_LANGUAGE_LENGTH = 20;
@@ -140,12 +68,6 @@ public class ResourceTable extends BaseHasResource implements Serializable {
 	 */
 	//@formatter:off
 	@Transient()
-	@Fields({
-		@Field(name = "myContentText", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "standardAnalyzer")),
-		@Field(name = "myContentTextEdgeNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteEdgeAnalyzer")),
-		@Field(name = "myContentTextNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteNGramAnalyzer")),
-		@Field(name = "myContentTextPhonetic", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompletePhoneticAnalyzer"))
-	})
 	//@formatter:on
 	private String myContentText;
 
@@ -171,12 +93,6 @@ public class ResourceTable extends BaseHasResource implements Serializable {
 	 * Holds the narrative text only - Used for Fulltext searching but not directly stored in the DB
 	 */
 	@Transient()
-	@Fields({
-		@Field(name = "myNarrativeText", index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "standardAnalyzer")),
-		@Field(name = "myNarrativeTextEdgeNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteEdgeAnalyzer")),
-		@Field(name = "myNarrativeTextNGram", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompleteNGramAnalyzer")),
-		@Field(name = "myNarrativeTextPhonetic", index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES, analyzer = @Analyzer(definition = "autocompletePhoneticAnalyzer"))
-	})
 	private String myNarrativeText;
 
 	@OneToMany(mappedBy = "myResource", cascade = {}, fetch = FetchType.LAZY, orphanRemoval = false)
@@ -225,11 +141,9 @@ public class ResourceTable extends BaseHasResource implements Serializable {
 	private String myProfile;
 
 	@OneToMany(mappedBy = "mySourceResource", cascade = {}, fetch = FetchType.LAZY, orphanRemoval = false)
-	@IndexedEmbedded()
 	private Collection<ResourceLink> myResourceLinks;
 
 	@Column(name = "RES_TYPE", length = RESTYPE_LEN)
-	@Field
 	private String myResourceType;
 
 	@OneToMany(mappedBy = "myResource", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

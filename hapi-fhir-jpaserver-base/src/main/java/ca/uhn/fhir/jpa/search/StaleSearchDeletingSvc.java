@@ -60,7 +60,7 @@ public class StaleSearchDeletingSvc {
 	@Autowired
 	private PlatformTransactionManager myTransactionManager;
 
-	@Scheduled(fixedDelay = 10 * DateUtils.MILLIS_PER_SECOND)
+	@Scheduled(fixedDelay = 10 * DateUtils.MILLIS_PER_MINUTE)
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public synchronized void pollForStaleSearches() {
 		if (myDaoConfig.isExpireSearchResults()) {
