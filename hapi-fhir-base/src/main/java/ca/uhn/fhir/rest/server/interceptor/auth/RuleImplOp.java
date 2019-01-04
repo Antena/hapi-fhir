@@ -134,6 +134,8 @@ class RuleImplOp extends BaseRule implements IAuthRule {
 							operation = RestOperationTypeEnum.CREATE;
 						} else if (nextPart.getRequestType() == RequestTypeEnum.PUT) {
 							operation = RestOperationTypeEnum.UPDATE;
+						} else if (nextPart.getRequestType() == RequestTypeEnum.DELETE) {
+							operation = RestOperationTypeEnum.DELETE;
 						} else {
 							throw new InvalidRequestException("Can not handle transaction with operation of type " + nextPart.getRequestType());
 						}
