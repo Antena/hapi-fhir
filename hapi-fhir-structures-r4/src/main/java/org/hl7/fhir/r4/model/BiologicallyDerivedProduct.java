@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -47,7 +47,7 @@ import org.hl7.fhir.exceptions.FHIRException;
  * A material substance originating from a biological entity intended to be transplanted or infused
 into another (possibly the same) biological entity.
  */
-@ResourceDef(name="BiologicallyDerivedProduct", profile="http://hl7.org/fhir/Profile/BiologicallyDerivedProduct")
+@ResourceDef(name="BiologicallyDerivedProduct", profile="http://hl7.org/fhir/StructureDefinition/BiologicallyDerivedProduct")
 public class BiologicallyDerivedProduct extends DomainResource {
 
     public enum BiologicallyDerivedProductCategory {
@@ -60,15 +60,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         TISSUE, 
         /**
-         * Body fluid
+         * Body fluid.
          */
         FLUID, 
         /**
-         * Collection of cells
+         * Collection of cells.
          */
         CELLS, 
         /**
-         * Biological agent of unspecified type
+         * Biological agent of unspecified type.
          */
         BIOLOGICALAGENT, 
         /**
@@ -117,9 +117,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case ORGAN: return "A collection of tissues joined in a structural unit to serve a common function.";
             case TISSUE: return "An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.";
-            case FLUID: return "Body fluid";
-            case CELLS: return "Collection of cells";
-            case BIOLOGICALAGENT: return "Biological agent of unspecified type";
+            case FLUID: return "Body fluid.";
+            case CELLS: return "Collection of cells.";
+            case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
             default: return "?";
           }
         }
@@ -284,15 +284,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
     public enum BiologicallyDerivedProductStorageScale {
         /**
-         * Fahrenheit temperature scale
+         * Fahrenheit temperature scale.
          */
         FARENHEIT, 
         /**
-         * Celsius or centigrade temperature scale
+         * Celsius or centigrade temperature scale.
          */
         CELSIUS, 
         /**
-         * Kelvin absolute thermodynamic temperature scale
+         * Kelvin absolute thermodynamic temperature scale.
          */
         KELVIN, 
         /**
@@ -331,9 +331,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case FARENHEIT: return "Fahrenheit temperature scale";
-            case CELSIUS: return "Celsius or centigrade temperature scale";
-            case KELVIN: return "Kelvin absolute thermodynamic temperature scale";
+            case FARENHEIT: return "Fahrenheit temperature scale.";
+            case CELSIUS: return "Celsius or centigrade temperature scale.";
+            case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
             default: return "?";
           }
         }
@@ -393,26 +393,26 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Block()
     public static class BiologicallyDerivedProductCollectionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * HealthCare Professional performing collection.
+         * Healthcare professional who is performing the collection.
          */
-        @Child(name = "collector", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="HealthCare Professional performing collection", formalDefinition="HealthCare Professional performing collection." )
+        @Child(name = "collector", type = {Practitioner.class, PractitionerRole.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Individual performing collection", formalDefinition="Healthcare professional who is performing the collection." )
         protected Reference collector;
 
         /**
-         * The actual object that is the target of the reference (HealthCare Professional performing collection.)
+         * The actual object that is the target of the reference (Healthcare professional who is performing the collection.)
          */
         protected Resource collectorTarget;
 
         /**
-         * Person or entity providing product.
+         * The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.
          */
         @Child(name = "source", type = {Patient.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Person or entity providing product", formalDefinition="Person or entity providing product." )
+        @Description(shortDefinition="Who is product from", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
         protected Reference source;
 
         /**
-         * The actual object that is the target of the reference (Person or entity providing product.)
+         * The actual object that is the target of the reference (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         protected Resource sourceTarget;
 
@@ -433,7 +433,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       }
 
         /**
-         * @return {@link #collector} (HealthCare Professional performing collection.)
+         * @return {@link #collector} (Healthcare professional who is performing the collection.)
          */
         public Reference getCollector() { 
           if (this.collector == null)
@@ -449,7 +449,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @param value {@link #collector} (HealthCare Professional performing collection.)
+         * @param value {@link #collector} (Healthcare professional who is performing the collection.)
          */
         public BiologicallyDerivedProductCollectionComponent setCollector(Reference value) { 
           this.collector = value;
@@ -457,14 +457,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #collector} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (HealthCare Professional performing collection.)
+         * @return {@link #collector} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Healthcare professional who is performing the collection.)
          */
         public Resource getCollectorTarget() { 
           return this.collectorTarget;
         }
 
         /**
-         * @param value {@link #collector} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (HealthCare Professional performing collection.)
+         * @param value {@link #collector} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Healthcare professional who is performing the collection.)
          */
         public BiologicallyDerivedProductCollectionComponent setCollectorTarget(Resource value) { 
           this.collectorTarget = value;
@@ -472,7 +472,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #source} (Person or entity providing product.)
+         * @return {@link #source} (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         public Reference getSource() { 
           if (this.source == null)
@@ -488,7 +488,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @param value {@link #source} (Person or entity providing product.)
+         * @param value {@link #source} (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         public BiologicallyDerivedProductCollectionComponent setSource(Reference value) { 
           this.source = value;
@@ -496,14 +496,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Person or entity providing product.)
+         * @return {@link #source} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         public Resource getSourceTarget() { 
           return this.sourceTarget;
         }
 
         /**
-         * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Person or entity providing product.)
+         * @param value {@link #source} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.)
          */
         public BiologicallyDerivedProductCollectionComponent setSourceTarget(Resource value) { 
           this.sourceTarget = value;
@@ -521,26 +521,30 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @return {@link #collected} (Time of product collection.)
          */
         public DateTimeType getCollectedDateTimeType() throws FHIRException { 
+          if (this.collected == null)
+            this.collected = new DateTimeType();
           if (!(this.collected instanceof DateTimeType))
             throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.collected.getClass().getName()+" was encountered");
           return (DateTimeType) this.collected;
         }
 
         public boolean hasCollectedDateTimeType() { 
-          return this.collected instanceof DateTimeType;
+          return this != null && this.collected instanceof DateTimeType;
         }
 
         /**
          * @return {@link #collected} (Time of product collection.)
          */
         public Period getCollectedPeriod() throws FHIRException { 
+          if (this.collected == null)
+            this.collected = new Period();
           if (!(this.collected instanceof Period))
             throw new FHIRException("Type mismatch: the type Period was expected, but "+this.collected.getClass().getName()+" was encountered");
           return (Period) this.collected;
         }
 
         public boolean hasCollectedPeriod() { 
-          return this.collected instanceof Period;
+          return this != null && this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -551,22 +555,24 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @param value {@link #collected} (Time of product collection.)
          */
         public BiologicallyDerivedProductCollectionComponent setCollected(Type value) { 
+          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
+            throw new Error("Not the right type for BiologicallyDerivedProduct.collection.collected[x]: "+value.fhirType());
           this.collected = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("collector", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "HealthCare Professional performing collection.", 0, 1, collector));
-          children.add(new Property("source", "Reference(Patient|Organization)", "Person or entity providing product.", 0, 1, source));
+          children.add(new Property("collector", "Reference(Practitioner|PractitionerRole)", "Healthcare professional who is performing the collection.", 0, 1, collector));
+          children.add(new Property("source", "Reference(Patient|Organization)", "The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.", 0, 1, source));
           children.add(new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1883491469: /*collector*/  return new Property("collector", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "HealthCare Professional performing collection.", 0, 1, collector);
-          case -896505829: /*source*/  return new Property("source", "Reference(Patient|Organization)", "Person or entity providing product.", 0, 1, source);
+          case 1883491469: /*collector*/  return new Property("collector", "Reference(Practitioner|PractitionerRole)", "Healthcare professional who is performing the collection.", 0, 1, collector);
+          case -896505829: /*source*/  return new Property("source", "Reference(Patient|Organization)", "The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.", 0, 1, source);
           case 1632037015: /*collected[x]*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
           case 1883491145: /*collected*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
           case 2005009924: /*collectedDateTime*/  return new Property("collected[x]", "dateTime|Period", "Time of product collection.", 0, 1, collected);
@@ -877,26 +883,30 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @return {@link #time} (Time of processing.)
          */
         public DateTimeType getTimeDateTimeType() throws FHIRException { 
+          if (this.time == null)
+            this.time = new DateTimeType();
           if (!(this.time instanceof DateTimeType))
             throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.time.getClass().getName()+" was encountered");
           return (DateTimeType) this.time;
         }
 
         public boolean hasTimeDateTimeType() { 
-          return this.time instanceof DateTimeType;
+          return this != null && this.time instanceof DateTimeType;
         }
 
         /**
          * @return {@link #time} (Time of processing.)
          */
         public Period getTimePeriod() throws FHIRException { 
+          if (this.time == null)
+            this.time = new Period();
           if (!(this.time instanceof Period))
             throw new FHIRException("Type mismatch: the type Period was expected, but "+this.time.getClass().getName()+" was encountered");
           return (Period) this.time;
         }
 
         public boolean hasTimePeriod() { 
-          return this.time instanceof Period;
+          return this != null && this.time instanceof Period;
         }
 
         public boolean hasTime() { 
@@ -907,6 +917,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @param value {@link #time} (Time of processing.)
          */
         public BiologicallyDerivedProductProcessingComponent setTime(Type value) { 
+          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
+            throw new Error("Not the right type for BiologicallyDerivedProduct.processing.time[x]: "+value.fhirType());
           this.time = value;
           return this;
         }
@@ -1159,26 +1171,30 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @return {@link #time} (Time of manipulation.)
          */
         public DateTimeType getTimeDateTimeType() throws FHIRException { 
+          if (this.time == null)
+            this.time = new DateTimeType();
           if (!(this.time instanceof DateTimeType))
             throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.time.getClass().getName()+" was encountered");
           return (DateTimeType) this.time;
         }
 
         public boolean hasTimeDateTimeType() { 
-          return this.time instanceof DateTimeType;
+          return this != null && this.time instanceof DateTimeType;
         }
 
         /**
          * @return {@link #time} (Time of manipulation.)
          */
         public Period getTimePeriod() throws FHIRException { 
+          if (this.time == null)
+            this.time = new Period();
           if (!(this.time instanceof Period))
             throw new FHIRException("Type mismatch: the type Period was expected, but "+this.time.getClass().getName()+" was encountered");
           return (Period) this.time;
         }
 
         public boolean hasTimePeriod() { 
-          return this.time instanceof Period;
+          return this != null && this.time instanceof Period;
         }
 
         public boolean hasTime() { 
@@ -1189,6 +1205,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @param value {@link #time} (Time of manipulation.)
          */
         public BiologicallyDerivedProductManipulationComponent setTime(Type value) { 
+          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
+            throw new Error("Not the right type for BiologicallyDerivedProduct.manipulation.time[x]: "+value.fhirType());
           this.time = value;
           return this;
         }
@@ -1761,14 +1779,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * Parent product (if any).
      */
-    @Child(name = "parent", type = {Reference.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "parent", type = {BiologicallyDerivedProduct.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="BiologicallyDerivedProduct parent", formalDefinition="Parent product (if any)." )
-    protected Reference parent;
-
+    protected List<Reference> parent;
     /**
-     * The actual object that is the target of the reference (Parent product (if any).)
+     * The actual objects that are the target of the reference (Parent product (if any).)
      */
-    protected Resource parentTarget;
+    protected List<BiologicallyDerivedProduct> parentTarget;
+
 
     /**
      * How this product was collected.
@@ -1778,17 +1796,17 @@ public class BiologicallyDerivedProduct extends DomainResource {
     protected BiologicallyDerivedProductCollectionComponent collection;
 
     /**
-     * Any processing of the product during collection.
+     * Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.
      */
     @Child(name = "processing", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Any processing of the product during collection", formalDefinition="Any processing of the product during collection." )
+    @Description(shortDefinition="Any processing of the product during collection", formalDefinition="Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells." )
     protected List<BiologicallyDerivedProductProcessingComponent> processing;
 
     /**
-     * Any manipulation of product post-collection.
+     * Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.
      */
     @Child(name = "manipulation", type = {}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Any manipulation of product post-collection", formalDefinition="Any manipulation of product post-collection." )
+    @Description(shortDefinition="Any manipulation of product post-collection", formalDefinition="Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion." )
     protected BiologicallyDerivedProductManipulationComponent manipulation;
 
     /**
@@ -1798,7 +1816,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Description(shortDefinition="Product storage", formalDefinition="Product storage." )
     protected List<BiologicallyDerivedProductStorageComponent> storage;
 
-    private static final long serialVersionUID = 1638250261L;
+    private static final long serialVersionUID = -1367034547L;
 
   /**
    * Constructor
@@ -2105,40 +2123,76 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * @return {@link #parent} (Parent product (if any).)
      */
-    public Reference getParent() { 
+    public List<Reference> getParent() { 
       if (this.parent == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.parent");
-        else if (Configuration.doAutoCreate())
-          this.parent = new Reference(); // cc
+        this.parent = new ArrayList<Reference>();
       return this.parent;
     }
 
-    public boolean hasParent() { 
-      return this.parent != null && !this.parent.isEmpty();
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public BiologicallyDerivedProduct setParent(List<Reference> theParent) { 
+      this.parent = theParent;
+      return this;
     }
 
-    /**
-     * @param value {@link #parent} (Parent product (if any).)
-     */
-    public BiologicallyDerivedProduct setParent(Reference value) { 
-      this.parent = value;
+    public boolean hasParent() { 
+      if (this.parent == null)
+        return false;
+      for (Reference item : this.parent)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addParent() { //3
+      Reference t = new Reference();
+      if (this.parent == null)
+        this.parent = new ArrayList<Reference>();
+      this.parent.add(t);
+      return t;
+    }
+
+    public BiologicallyDerivedProduct addParent(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.parent == null)
+        this.parent = new ArrayList<Reference>();
+      this.parent.add(t);
       return this;
     }
 
     /**
-     * @return {@link #parent} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Parent product (if any).)
+     * @return The first repetition of repeating field {@link #parent}, creating it if it does not already exist
      */
-    public Resource getParentTarget() { 
+    public Reference getParentFirstRep() { 
+      if (getParent().isEmpty()) {
+        addParent();
+      }
+      return getParent().get(0);
+    }
+
+    /**
+     * @deprecated Use Reference#setResource(IBaseResource) instead
+     */
+    @Deprecated
+    public List<BiologicallyDerivedProduct> getParentTarget() { 
+      if (this.parentTarget == null)
+        this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
       return this.parentTarget;
     }
 
     /**
-     * @param value {@link #parent} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Parent product (if any).)
+     * @deprecated Use Reference#setResource(IBaseResource) instead
      */
-    public BiologicallyDerivedProduct setParentTarget(Resource value) { 
-      this.parentTarget = value;
-      return this;
+    @Deprecated
+    public BiologicallyDerivedProduct addParentTarget() { 
+      BiologicallyDerivedProduct r = new BiologicallyDerivedProduct();
+      if (this.parentTarget == null)
+        this.parentTarget = new ArrayList<BiologicallyDerivedProduct>();
+      this.parentTarget.add(r);
+      return r;
     }
 
     /**
@@ -2166,7 +2220,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #processing} (Any processing of the product during collection.)
+     * @return {@link #processing} (Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.)
      */
     public List<BiologicallyDerivedProductProcessingComponent> getProcessing() { 
       if (this.processing == null)
@@ -2219,7 +2273,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #manipulation} (Any manipulation of product post-collection.)
+     * @return {@link #manipulation} (Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.)
      */
     public BiologicallyDerivedProductManipulationComponent getManipulation() { 
       if (this.manipulation == null)
@@ -2235,7 +2289,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #manipulation} (Any manipulation of product post-collection.)
+     * @param value {@link #manipulation} (Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.)
      */
     public BiologicallyDerivedProduct setManipulation(BiologicallyDerivedProductManipulationComponent value) { 
       this.manipulation = value;
@@ -2303,10 +2357,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         children.add(new Property("status", "code", "Whether the product is currently available.", 0, 1, status));
         children.add(new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request));
         children.add(new Property("quantity", "integer", "Number of discrete units within this product.", 0, 1, quantity));
-        children.add(new Property("parent", "Reference(Any)", "Parent product (if any).", 0, 1, parent));
+        children.add(new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent));
         children.add(new Property("collection", "", "How this product was collected.", 0, 1, collection));
-        children.add(new Property("processing", "", "Any processing of the product during collection.", 0, java.lang.Integer.MAX_VALUE, processing));
-        children.add(new Property("manipulation", "", "Any manipulation of product post-collection.", 0, 1, manipulation));
+        children.add(new Property("processing", "", "Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.", 0, java.lang.Integer.MAX_VALUE, processing));
+        children.add(new Property("manipulation", "", "Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.", 0, 1, manipulation));
         children.add(new Property("storage", "", "Product storage.", 0, java.lang.Integer.MAX_VALUE, storage));
       }
 
@@ -2319,10 +2373,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "Whether the product is currently available.", 0, 1, status);
         case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request);
         case -1285004149: /*quantity*/  return new Property("quantity", "integer", "Number of discrete units within this product.", 0, 1, quantity);
-        case -995424086: /*parent*/  return new Property("parent", "Reference(Any)", "Parent product (if any).", 0, 1, parent);
+        case -995424086: /*parent*/  return new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent);
         case -1741312354: /*collection*/  return new Property("collection", "", "How this product was collected.", 0, 1, collection);
-        case 422194963: /*processing*/  return new Property("processing", "", "Any processing of the product during collection.", 0, java.lang.Integer.MAX_VALUE, processing);
-        case -696214627: /*manipulation*/  return new Property("manipulation", "", "Any manipulation of product post-collection.", 0, 1, manipulation);
+        case 422194963: /*processing*/  return new Property("processing", "", "Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.", 0, java.lang.Integer.MAX_VALUE, processing);
+        case -696214627: /*manipulation*/  return new Property("manipulation", "", "Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.", 0, 1, manipulation);
         case -1884274053: /*storage*/  return new Property("storage", "", "Product storage.", 0, java.lang.Integer.MAX_VALUE, storage);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2338,7 +2392,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<BiologicallyDerivedProductStatus>
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // IntegerType
-        case -995424086: /*parent*/ return this.parent == null ? new Base[0] : new Base[] {this.parent}; // Reference
+        case -995424086: /*parent*/ return this.parent == null ? new Base[0] : this.parent.toArray(new Base[this.parent.size()]); // Reference
         case -1741312354: /*collection*/ return this.collection == null ? new Base[0] : new Base[] {this.collection}; // BiologicallyDerivedProductCollectionComponent
         case 422194963: /*processing*/ return this.processing == null ? new Base[0] : this.processing.toArray(new Base[this.processing.size()]); // BiologicallyDerivedProductProcessingComponent
         case -696214627: /*manipulation*/ return this.manipulation == null ? new Base[0] : new Base[] {this.manipulation}; // BiologicallyDerivedProductManipulationComponent
@@ -2372,7 +2426,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.quantity = castToInteger(value); // IntegerType
           return value;
         case -995424086: // parent
-          this.parent = castToReference(value); // Reference
+          this.getParent().add(castToReference(value)); // Reference
           return value;
         case -1741312354: // collection
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
@@ -2408,7 +2462,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else if (name.equals("quantity")) {
           this.quantity = castToInteger(value); // IntegerType
         } else if (name.equals("parent")) {
-          this.parent = castToReference(value); // Reference
+          this.getParent().add(castToReference(value));
         } else if (name.equals("collection")) {
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
         } else if (name.equals("processing")) {
@@ -2431,7 +2485,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -892481550:  return getStatusElement();
         case 1095692943:  return addRequest(); 
         case -1285004149:  return getQuantityElement();
-        case -995424086:  return getParent(); 
+        case -995424086:  return addParent(); 
         case -1741312354:  return getCollection(); 
         case 422194963:  return addProcessing(); 
         case -696214627:  return getManipulation(); 
@@ -2482,8 +2536,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.quantity");
         }
         else if (name.equals("parent")) {
-          this.parent = new Reference();
-          return this.parent;
+          return addParent();
         }
         else if (name.equals("collection")) {
           this.collection = new BiologicallyDerivedProductCollectionComponent();
@@ -2525,7 +2578,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
             dst.request.add(i.copy());
         };
         dst.quantity = quantity == null ? null : quantity.copy();
-        dst.parent = parent == null ? null : parent.copy();
+        if (parent != null) {
+          dst.parent = new ArrayList<Reference>();
+          for (Reference i : parent)
+            dst.parent.add(i.copy());
+        };
         dst.collection = collection == null ? null : collection.copy();
         if (processing != null) {
           dst.processing = new ArrayList<BiologicallyDerivedProductProcessingComponent>();

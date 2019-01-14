@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Sep 13, 2018 09:04-0400 for FHIR v3.5.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -37,23 +37,23 @@ import org.hl7.fhir.exceptions.FHIRException;
 public enum UsersessionStatus {
 
         /**
-         * The user session is activating
+         * The user session is activating.
          */
         ACTIVATING, 
         /**
-         * The user session is active
+         * The user session is active.
          */
         ACTIVE, 
         /**
-         * The user session is suspended
+         * The user session is suspended.
          */
         SUSPENDED, 
         /**
-         * The user session is closing
+         * The user session is closing.
          */
         CLOSING, 
         /**
-         * The user session is closed
+         * The user session is closed.
          */
         CLOSED, 
         /**
@@ -90,11 +90,11 @@ public enum UsersessionStatus {
         }
         public String getDefinition() {
           switch (this) {
-            case ACTIVATING: return "The user session is activating";
-            case ACTIVE: return "The user session is active";
-            case SUSPENDED: return "The user session is suspended";
-            case CLOSING: return "The user session is closing";
-            case CLOSED: return "The user session is closed";
+            case ACTIVATING: return "The user session is activating.";
+            case ACTIVE: return "The user session is active.";
+            case SUSPENDED: return "The user session is suspended.";
+            case CLOSING: return "The user session is closing.";
+            case CLOSED: return "The user session is closed.";
             default: return "?";
           }
         }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -72,7 +72,7 @@ public enum MessageTransport {
           }
         }
         public String getSystem() {
-          return "http://hl7.org/fhir/message-transport";
+          return "http://terminology.hl7.org/CodeSystem/message-transport";
         }
         public String getDefinition() {
           switch (this) {

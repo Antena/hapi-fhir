@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -46,28 +46,28 @@ import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A summary of information based on the results of executing a TestScript.
  */
-@ResourceDef(name="TestReport", profile="http://hl7.org/fhir/Profile/TestReport")
+@ResourceDef(name="TestReport", profile="http://hl7.org/fhir/StructureDefinition/TestReport")
 public class TestReport extends DomainResource {
 
     public enum TestReportStatus {
         /**
-         * All test operations have completed
+         * All test operations have completed.
          */
         COMPLETED, 
         /**
-         * A test operations is currently executing
+         * A test operations is currently executing.
          */
         INPROGRESS, 
         /**
-         * A test operation is waiting for an external client request
+         * A test operation is waiting for an external client request.
          */
         WAITING, 
         /**
-         * The test script execution was manually stopped
+         * The test script execution was manually stopped.
          */
         STOPPED, 
         /**
-         * This test report was entered or created in error
+         * This test report was entered or created in error.
          */
         ENTEREDINERROR, 
         /**
@@ -114,11 +114,11 @@ public class TestReport extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case COMPLETED: return "All test operations have completed";
-            case INPROGRESS: return "A test operations is currently executing";
-            case WAITING: return "A test operation is waiting for an external client request";
-            case STOPPED: return "The test script execution was manually stopped";
-            case ENTEREDINERROR: return "This test report was entered or created in error";
+            case COMPLETED: return "All test operations have completed.";
+            case INPROGRESS: return "A test operations is currently executing.";
+            case WAITING: return "A test operation is waiting for an external client request.";
+            case STOPPED: return "The test script execution was manually stopped.";
+            case ENTEREDINERROR: return "This test report was entered or created in error.";
             default: return "?";
           }
         }
@@ -191,15 +191,15 @@ public class TestReport extends DomainResource {
 
     public enum TestReportResult {
         /**
-         * All test operations successfully passed all asserts
+         * All test operations successfully passed all asserts.
          */
         PASS, 
         /**
-         * One or more test operations failed one or more asserts
+         * One or more test operations failed one or more asserts.
          */
         FAIL, 
         /**
-         * One or more test operations is pending execution completion
+         * One or more test operations is pending execution completion.
          */
         PENDING, 
         /**
@@ -238,9 +238,9 @@ public class TestReport extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case PASS: return "All test operations successfully passed all asserts";
-            case FAIL: return "One or more test operations failed one or more asserts";
-            case PENDING: return "One or more test operations is pending execution completion";
+            case PASS: return "All test operations successfully passed all asserts.";
+            case FAIL: return "One or more test operations failed one or more asserts.";
+            case PENDING: return "One or more test operations is pending execution completion.";
             default: return "?";
           }
         }
@@ -303,11 +303,11 @@ public class TestReport extends DomainResource {
          */
         TESTENGINE, 
         /**
-         * A FHIR Client
+         * A FHIR Client.
          */
         CLIENT, 
         /**
-         * A FHIR Server
+         * A FHIR Server.
          */
         SERVER, 
         /**
@@ -347,8 +347,8 @@ public class TestReport extends DomainResource {
         public String getDefinition() {
           switch (this) {
             case TESTENGINE: return "The test execution engine.";
-            case CLIENT: return "A FHIR Client";
-            case SERVER: return "A FHIR Server";
+            case CLIENT: return "A FHIR Client.";
+            case SERVER: return "A FHIR Server.";
             default: return "?";
           }
         }
@@ -2845,10 +2845,10 @@ public class TestReport extends DomainResource {
     protected List<TestReportTestComponent> test;
 
     /**
-     * The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise).
+     * The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).
      */
     @Child(name = "teardown", type = {}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The results of running the series of required clean up steps", formalDefinition="The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise)." )
+    @Description(shortDefinition="The results of running the series of required clean up steps", formalDefinition="The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise)." )
     protected TestReportTeardownComponent teardown;
 
     private static final long serialVersionUID = 79474516L;
@@ -3373,7 +3373,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return {@link #teardown} (The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise).)
+     * @return {@link #teardown} (The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).)
      */
     public TestReportTeardownComponent getTeardown() { 
       if (this.teardown == null)
@@ -3389,7 +3389,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #teardown} (The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise).)
+     * @param value {@link #teardown} (The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).)
      */
     public TestReport setTeardown(TestReportTeardownComponent value) { 
       this.teardown = value;
@@ -3409,7 +3409,7 @@ public class TestReport extends DomainResource {
         children.add(new Property("participant", "", "A participant in the test execution, either the execution engine, a client, or a server.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("setup", "", "The results of the series of required setup operations before the tests were executed.", 0, 1, setup));
         children.add(new Property("test", "", "A test executed from the test script.", 0, java.lang.Integer.MAX_VALUE, test));
-        children.add(new Property("teardown", "", "The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise).", 0, 1, teardown));
+        children.add(new Property("teardown", "", "The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).", 0, 1, teardown));
       }
 
       @Override
@@ -3426,7 +3426,7 @@ public class TestReport extends DomainResource {
         case 767422259: /*participant*/  return new Property("participant", "", "A participant in the test execution, either the execution engine, a client, or a server.", 0, java.lang.Integer.MAX_VALUE, participant);
         case 109329021: /*setup*/  return new Property("setup", "", "The results of the series of required setup operations before the tests were executed.", 0, 1, setup);
         case 3556498: /*test*/  return new Property("test", "", "A test executed from the test script.", 0, java.lang.Integer.MAX_VALUE, test);
-        case -1663474172: /*teardown*/  return new Property("teardown", "", "The results of the series of operations required to clean up after the all the tests were executed (successfully or otherwise).", 0, 1, teardown);
+        case -1663474172: /*teardown*/  return new Property("teardown", "", "The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise).", 0, 1, teardown);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 

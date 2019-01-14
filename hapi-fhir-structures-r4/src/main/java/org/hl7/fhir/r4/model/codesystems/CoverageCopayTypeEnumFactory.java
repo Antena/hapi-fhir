@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 
 import org.hl7.fhir.r4.model.EnumFactory;
@@ -47,10 +47,18 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
       return CoverageCopayType.EMERGENCY;
     if ("inpthosp".equals(codeString))
       return CoverageCopayType.INPTHOSP;
+    if ("televisit".equals(codeString))
+      return CoverageCopayType.TELEVISIT;
     if ("urgentcare".equals(codeString))
       return CoverageCopayType.URGENTCARE;
     if ("copaypct".equals(codeString))
       return CoverageCopayType.COPAYPCT;
+    if ("copay".equals(codeString))
+      return CoverageCopayType.COPAY;
+    if ("deductible".equals(codeString))
+      return CoverageCopayType.DEDUCTIBLE;
+    if ("maxoutofpocket".equals(codeString))
+      return CoverageCopayType.MAXOUTOFPOCKET;
     throw new IllegalArgumentException("Unknown CoverageCopayType code '"+codeString+"'");
   }
 
@@ -63,10 +71,18 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
       return "emergency";
     if (code == CoverageCopayType.INPTHOSP)
       return "inpthosp";
+    if (code == CoverageCopayType.TELEVISIT)
+      return "televisit";
     if (code == CoverageCopayType.URGENTCARE)
       return "urgentcare";
     if (code == CoverageCopayType.COPAYPCT)
       return "copaypct";
+    if (code == CoverageCopayType.COPAY)
+      return "copay";
+    if (code == CoverageCopayType.DEDUCTIBLE)
+      return "deductible";
+    if (code == CoverageCopayType.MAXOUTOFPOCKET)
+      return "maxoutofpocket";
     return "?";
   }
 

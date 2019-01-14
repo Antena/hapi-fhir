@@ -28,23 +28,44 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 package org.hl7.fhir.utilities;
 
-import org.apache.commons.io.FileUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.commons.io.FileUtils;
+import org.hl7.fhir.exceptions.FHIRException;
+
 
 public class Utilities {
 
 //	 private static final String TOKEN_REGEX = "^a-z[A-Za-z0-9]*$";
 
-
-  private static final String OID_REGEX = "[0-2](\\.(0|[1-9]([0-9])*))*";
+  private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
 
   /**
      * Returns the plural form of the word in the string.
@@ -177,7 +198,7 @@ public class Utilities {
    String[] files = src.list();
    for (String f : files) {
      if (new CSFile(sourceFolder+File.separator+f).isDirectory()) {
-       if (!f.startsWith(".")) // ignore .svn...
+       if (!f.startsWith(".")) // ignore .git files...
          copyDirectory(sourceFolder+File.separator+f, destFolder+File.separator+f, notifier);
      } else {
        if (notifier != null)
@@ -232,7 +253,8 @@ public class Utilities {
   	throws IOException
   {
     if (!new CSFile(dir+file).exists()) {
-      errors.add("Unable to find "+purpose+" file "+file+" in "+dir);
+      if (errors != null)
+    	  errors.add("Unable to find "+purpose+" file "+file+" in "+dir);
       return false;
     } else {
       return true;
@@ -304,8 +326,42 @@ public class Utilities {
   }
 
 
+  public static byte[] transform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException  {
+    TransformerFactory f = TransformerFactory.newInstance();
+    f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
+    StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
+    f.setURIResolver(new ZipURIResolver(files));
+    Transformer t = f.newTransformer(xsrc);
+
+    t.setURIResolver(new ZipURIResolver(files));
+    StreamSource src = new StreamSource(new ByteArrayInputStream(source));
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    StreamResult res = new StreamResult(out);
+    t.transform(src, res);
+    return out.toByteArray();    
+  }
+  
+  public static void bytesToFile(byte[] content, String filename) throws IOException  {
+    FileOutputStream out = new FileOutputStream(filename);
+    out.write(content);
+    out.close();
+    
+  }
 
 
+  public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException  {
+
+    TransformerFactory f = TransformerFactory.newInstance();
+    StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
+    f.setURIResolver(new MyURIResolver(xsltDir, alt));
+    Transformer t = f.newTransformer(xsrc);
+
+    t.setURIResolver(new MyURIResolver(xsltDir, alt));
+    StreamSource src = new StreamSource(new FileInputStream(source));
+    StreamResult res = new StreamResult(new FileOutputStream(dest));
+    t.transform(src, res);
+    
+  }
 
 
   public static String appendSlash(String definitions) {
@@ -372,7 +428,7 @@ public class Utilities {
   public static boolean isPlural(String word) {
     word = word.toLowerCase();
     if ("restricts".equals(word) || "contains".equals(word) || "data".equals(word) || "specimen".equals(word) || "replaces".equals(word) || "addresses".equals(word) 
-        || "supplementalData".equals(word) || "instantiates".equals(word))
+        || "supplementalData".equals(word) || "instantiates".equals(word) || "imports".equals(word))
       return false;
     Inflector inf = new Inflector();
     return !inf.singularize(word).equals(word);
@@ -410,6 +466,8 @@ public class Utilities {
       else if (!s.toString().endsWith(File.separator))
         s.append(File.separator);
       String a = arg;
+      if ("[tmp]".equals(a))
+        a = System.getProperty("java.io.tmpdir");
       a = a.replace("\\", File.separator);
       a = a.replace("/", File.separator);
       if (s.length() > 0 && a.startsWith(File.separator))
@@ -723,13 +781,15 @@ public class Utilities {
         b.append("\\r");
       else if (c == '\n')
         b.append("\\n");
+      else if (c == '\t')
+        b.append("\\t");
       else if (c == '"')
         b.append("\\\"");
-      else if (c == '\'')
-        b.append("\\'");
       else if (c == '\\')
         b.append("\\\\");
-      else 
+      else if (((int) c) < 32)
+        b.append("\\u"+Utilities.padLeft(String.valueOf((int) c), '0', 4));  
+      else
         b.append(c);
     }   
     return b.toString();
@@ -777,6 +837,39 @@ public class Utilities {
 	  return res;
   }
 
+
+  // http://stackoverflow.com/questions/3780406/how-to-play-a-sound-alert-in-a-java-application
+  public static float SAMPLE_RATE = 8000f;
+  
+  public static void tone(int hz, int msecs) {
+      tone(hz, msecs, 1.0);
+   }
+
+  public static void tone(int hz, int msecs, double vol) {
+    try {
+      byte[] buf = new byte[1];
+      AudioFormat af = 
+          new AudioFormat(
+              SAMPLE_RATE, // sampleRate
+              8,           // sampleSizeInBits
+              1,           // channels
+              true,        // signed
+              false);      // bigEndian
+      SourceDataLine sdl;
+      sdl = AudioSystem.getSourceDataLine(af);
+      sdl.open(af);
+      sdl.start();
+      for (int i=0; i < msecs*8; i++) {
+        double angle = i / (SAMPLE_RATE / hz) * 2.0 * Math.PI;
+        buf[0] = (byte)(Math.sin(angle) * 127.0 * vol);
+        sdl.write(buf,0,1);
+      }
+      sdl.drain();
+      sdl.stop();
+      sdl.close();
+    } catch (Exception e) {
+    }
+  }
 
 
   public static boolean isOid(String cc) {
@@ -859,7 +952,7 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:") ;
+    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:")) ;
   }
 
 
@@ -912,7 +1005,7 @@ public class Utilities {
   }
 
 
-  private static boolean isWindows() {
+  public static boolean isWindows() {
     return System.getProperty("os.name").startsWith("Windows");
   }
 
@@ -969,7 +1062,22 @@ public class Utilities {
     return b.toString();
   }
 
+  public interface FileVisitor {
+    void visitFile(File file) throws FileNotFoundException, IOException;
+  }
 
+  public static void visitFiles(String folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
+    visitFiles(new File(folder), extension, visitor);
+  }
+  
+  public static void visitFiles(File folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
+    for (File file : folder.listFiles()) {
+      if (file.isDirectory()) 
+        visitFiles(file, extension, visitor);
+      else if (extension == null || file.getName().endsWith(extension)) 
+        visitor.visitFile(file);
+    }    
+  }
 
 
 }

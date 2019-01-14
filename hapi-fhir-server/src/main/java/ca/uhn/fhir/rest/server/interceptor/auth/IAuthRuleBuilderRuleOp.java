@@ -2,11 +2,13 @@ package ca.uhn.fhir.rest.server.interceptor.auth;
 
 import org.hl7.fhir.instance.model.api.IIdType;
 
+import java.util.Collection;
+
 /*
  * #%L
  * HAPI FHIR - Server Framework
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,4 +60,5 @@ public interface IAuthRuleBuilderRuleOp extends IAuthRuleBuilderAppliesTo<IAuthR
 	 */
 	IAuthRuleFinished instance(IIdType theId);
 
+	IAuthRuleFinished instances(Collection<IIdType> theInstances);
 }

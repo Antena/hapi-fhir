@@ -4,7 +4,7 @@ package ca.uhn.fhir.parser;
  * #%L
  * HAPI FHIR - Core Library
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,17 +38,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.instance.model.api.*;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ca.uhn.fhir.context.BaseRuntimeElementDefinition.ChildTypeEnum.ID_DATATYPE;
 import static ca.uhn.fhir.context.BaseRuntimeElementDefinition.ChildTypeEnum.PRIMITIVE_DATATYPE;
@@ -654,8 +651,9 @@ public class JsonParser extends BaseParser implements IJsonLikeParser {
 			if (isBlank(versionIdPart)) {
 				versionIdPart = ResourceMetadataKeyEnum.VERSION.get(resource);
 			}
+			List<Map.Entry<ResourceMetadataKeyEnum<?>, Object>> extensionMetadataKeys = getExtensionMetadataKeys(resource);
 
-			if (super.shouldEncodeResourceMeta(resource) && ElementUtil.isEmpty(versionIdPart, updated, securityLabels, tags, profiles) == false) {
+			if (super.shouldEncodeResourceMeta(resource) && (ElementUtil.isEmpty(versionIdPart, updated, securityLabels, tags, profiles) == false) || !extensionMetadataKeys.isEmpty()) {
 				beginObject(theEventWriter, "meta");
 				writeOptionalTagWithTextNode(theEventWriter, "versionId", versionIdPart);
 				writeOptionalTagWithTextNode(theEventWriter, "lastUpdated", updated);
@@ -695,6 +693,8 @@ public class JsonParser extends BaseParser implements IJsonLikeParser {
 					theEventWriter.endArray();
 				}
 
+				addExtensionMetadata(theResDef, theResource, theContainedResource, theSubResource, extensionMetadataKeys, resDef, theEventWriter);
+
 				theEventWriter.endObject(); // end meta
 			}
 		}
@@ -702,6 +702,23 @@ public class JsonParser extends BaseParser implements IJsonLikeParser {
 		encodeCompositeElementToStreamWriter(theResDef, theResource, theResource, theEventWriter, theContainedResource, theSubResource, new CompositeChildElement(resDef, theSubResource));
 
 		theEventWriter.endObject();
+	}
+
+
+	private void addExtensionMetadata(RuntimeResourceDefinition theResDef, IBaseResource theResource,
+												 boolean theContainedResource, boolean theSubResource,
+												 List<Map.Entry<ResourceMetadataKeyEnum<?>, Object>> extensionMetadataKeys,
+												 RuntimeResourceDefinition resDef,
+												 JsonLikeWriter theEventWriter) throws IOException {
+		if (extensionMetadataKeys.isEmpty()) {
+			return;
+		}
+
+		ExtensionDt metaResource = new ExtensionDt();
+		for (Map.Entry<ResourceMetadataKeyEnum<?>, Object> entry : extensionMetadataKeys) {
+			metaResource.addUndeclaredExtension((ExtensionDt) entry.getValue());
+		}
+		encodeCompositeElementToStreamWriter(theResDef, theResource, metaResource, theEventWriter, theContainedResource, theSubResource, new CompositeChildElement(resDef, theSubResource));
 	}
 
 	/**

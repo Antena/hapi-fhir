@@ -4,7 +4,7 @@ package ca.uhn.fhir.jpa.search;
  * #%L
  * HAPI FHIR JPA Server
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,13 +63,17 @@ public class PersistedJpaSearchFirstPageBundleProvider extends PersistedJpaBundl
 
 		TransactionTemplate txTemplate = new TransactionTemplate(myTxManager);
 		txTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRED);
-		List<IBaseResource> retVal = txTemplate.execute(new TransactionCallback<List<IBaseResource>>() {
-			@Override
-			public List<IBaseResource> doInTransaction(TransactionStatus theStatus) {
-				return toResourceList(mySearchBuilder, pids);
-			}
-		});
+		List<IBaseResource> retVal = txTemplate.execute(theStatus -> toResourceList(mySearchBuilder, pids));
 
+		int totalCountWanted = theToIndex - theFromIndex;
+		if (retVal.size() < totalCountWanted) {
+			if (mySearch.getStatus() == SearchStatusEnum.PASSCMPLET) {
+				int remainingWanted = totalCountWanted - retVal.size();
+				int fromIndex = theToIndex - remainingWanted;
+				List<IBaseResource> remaining = super.getResources(fromIndex, theToIndex);
+				retVal.addAll(remaining);
+			}
+		}
 		ourLog.trace("Loaded resources to return");
 
 		return retVal;

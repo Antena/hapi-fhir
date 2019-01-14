@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -45,7 +45,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc.
  */
-@ResourceDef(name="Account", profile="http://hl7.org/fhir/Profile/Account")
+@ResourceDef(name="Account", profile="http://hl7.org/fhir/StructureDefinition/Account")
 public class Account extends DomainResource {
 
     public enum AccountStatus {
@@ -62,6 +62,14 @@ public class Account extends DomainResource {
          */
         ENTEREDINERROR, 
         /**
+         * This account is on hold.
+         */
+        ONHOLD, 
+        /**
+         * The account status is unknown.
+         */
+        UNKNOWN, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -74,6 +82,10 @@ public class Account extends DomainResource {
           return INACTIVE;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
+        if ("on-hold".equals(codeString))
+          return ONHOLD;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -84,6 +96,8 @@ public class Account extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case ONHOLD: return "on-hold";
+            case UNKNOWN: return "unknown";
             default: return "?";
           }
         }
@@ -92,6 +106,8 @@ public class Account extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/account-status";
             case INACTIVE: return "http://hl7.org/fhir/account-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/account-status";
+            case ONHOLD: return "http://hl7.org/fhir/account-status";
+            case UNKNOWN: return "http://hl7.org/fhir/account-status";
             default: return "?";
           }
         }
@@ -100,6 +116,8 @@ public class Account extends DomainResource {
             case ACTIVE: return "This account is active and may be used.";
             case INACTIVE: return "This account is inactive and should not be used to track financial information.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case ONHOLD: return "This account is on hold.";
+            case UNKNOWN: return "The account status is unknown.";
             default: return "?";
           }
         }
@@ -108,6 +126,8 @@ public class Account extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in error";
+            case ONHOLD: return "On Hold";
+            case UNKNOWN: return "Unknown";
             default: return "?";
           }
         }
@@ -124,6 +144,10 @@ public class Account extends DomainResource {
           return AccountStatus.INACTIVE;
         if ("entered-in-error".equals(codeString))
           return AccountStatus.ENTEREDINERROR;
+        if ("on-hold".equals(codeString))
+          return AccountStatus.ONHOLD;
+        if ("unknown".equals(codeString))
+          return AccountStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown AccountStatus code '"+codeString+"'");
         }
         public Enumeration<AccountStatus> fromType(Base code) throws FHIRException {
@@ -140,6 +164,10 @@ public class Account extends DomainResource {
           return new Enumeration<AccountStatus>(this, AccountStatus.INACTIVE);
         if ("entered-in-error".equals(codeString))
           return new Enumeration<AccountStatus>(this, AccountStatus.ENTEREDINERROR);
+        if ("on-hold".equals(codeString))
+          return new Enumeration<AccountStatus>(this, AccountStatus.ONHOLD);
+        if ("unknown".equals(codeString))
+          return new Enumeration<AccountStatus>(this, AccountStatus.UNKNOWN);
         throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
         }
     public String toCode(AccountStatus code) {
@@ -149,6 +177,10 @@ public class Account extends DomainResource {
         return "inactive";
       if (code == AccountStatus.ENTEREDINERROR)
         return "entered-in-error";
+      if (code == AccountStatus.ONHOLD)
+        return "on-hold";
+      if (code == AccountStatus.UNKNOWN)
+        return "unknown";
       return "?";
       }
     public String toSystem(AccountStatus code) {
@@ -159,18 +191,18 @@ public class Account extends DomainResource {
     @Block()
     public static class CoverageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.
          */
         @Child(name = "coverage", type = {Coverage.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The party(s) that are responsible for covering the payment of this account", formalDefinition="The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).\n\nA coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing." )
+        @Description(shortDefinition="The party(s), such as insurances, that may contribute to the payment of this account", formalDefinition="The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).\n\nA coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing." )
         protected Reference coverage;
 
         /**
-         * The actual object that is the target of the reference (The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * The actual object that is the target of the reference (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
          */
         protected Coverage coverageTarget;
 
@@ -199,9 +231,9 @@ A coverage may only be resposible for specific types of charges, and the sequenc
       }
 
         /**
-         * @return {@link #coverage} (The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * @return {@link #coverage} (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
          */
         public Reference getCoverage() { 
           if (this.coverage == null)
@@ -217,9 +249,9 @@ A coverage may only be resposible for specific types of charges, and the sequenc
         }
 
         /**
-         * @param value {@link #coverage} (The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * @param value {@link #coverage} (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
          */
         public CoverageComponent setCoverage(Reference value) { 
           this.coverage = value;
@@ -227,9 +259,9 @@ A coverage may only be resposible for specific types of charges, and the sequenc
         }
 
         /**
-         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * @return {@link #coverage} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
          */
         public Coverage getCoverageTarget() { 
           if (this.coverageTarget == null)
@@ -241,9 +273,9 @@ A coverage may only be resposible for specific types of charges, and the sequenc
         }
 
         /**
-         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).
+         * @param value {@link #coverage} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).
 
-A coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
+A coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.)
          */
         public CoverageComponent setCoverageTarget(Coverage value) { 
           this.coverageTarget = value;
@@ -297,14 +329,14 @@ A coverage may only be resposible for specific types of charges, and the sequenc
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("coverage", "Reference(Coverage)", "The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).\n\nA coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.", 0, 1, coverage));
+          children.add(new Property("coverage", "Reference(Coverage)", "The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).\n\nA coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.", 0, 1, coverage));
           children.add(new Property("priority", "positiveInt", "The priority of the coverage in the context of this account.", 0, 1, priority));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -351767064: /*coverage*/  return new Property("coverage", "Reference(Coverage)", "The party(s) that are responsible for payment (or part of) of charges applied to this account (including self-pay).\n\nA coverage may only be resposible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.", 0, 1, coverage);
+          case -351767064: /*coverage*/  return new Property("coverage", "Reference(Coverage)", "The party(s) that contribute to payment (or part of) of the charges applied to this account (including self-pay).\n\nA coverage may only be responsible for specific types of charges, and the sequence of the coverages in the account could be important when processing billing.", 0, 1, coverage);
           case -1165461084: /*priority*/  return new Property("priority", "positiveInt", "The priority of the coverage in the context of this account.", 0, 1, priority);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -720,8 +752,8 @@ A coverage may only be resposible for specific types of charges, and the sequenc
     /**
      * Indicates whether the account is presently used/usable or not.
      */
-    @Child(name = "status", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="Indicates whether the account is presently used/usable or not." )
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="active | inactive | entered-in-error | on-hold | unknown", formalDefinition="Indicates whether the account is presently used/usable or not." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-status")
     protected Enumeration<AccountStatus> status;
 
@@ -741,69 +773,61 @@ A coverage may only be resposible for specific types of charges, and the sequenc
     protected StringType name;
 
     /**
-     * Identifies the patient, device, practitioner, location or other object the account is associated with.
+     * Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.
      */
-    @Child(name = "subject", type = {Patient.class, Device.class, Practitioner.class, Location.class, HealthcareService.class, Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="What is account tied to?", formalDefinition="Identifies the patient, device, practitioner, location or other object the account is associated with." )
-    protected Reference subject;
+    @Child(name = "subject", type = {Patient.class, Device.class, Practitioner.class, PractitionerRole.class, Location.class, HealthcareService.class, Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The entity that caused the expenses", formalDefinition="Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account." )
+    protected List<Reference> subject;
+    /**
+     * The actual objects that are the target of the reference (Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.)
+     */
+    protected List<Resource> subjectTarget;
+
 
     /**
-     * The actual object that is the target of the reference (Identifies the patient, device, practitioner, location or other object the account is associated with.)
+     * The date range of services associated with this account.
      */
-    protected Resource subjectTarget;
-
-    /**
-     * Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc.
-     */
-    @Child(name = "period", type = {Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Transaction window", formalDefinition="Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc." )
-    protected Period period;
-
-    /**
-     * Indicates the period of time over which the account is allowed to have transactions posted to it.
-This period may be different to the coveragePeriod which is the duration of time that services may occur.
-     */
-    @Child(name = "active", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Time window that transactions may be posted to this account", formalDefinition="Indicates the period of time over which the account is allowed to have transactions posted to it.\nThis period may be different to the coveragePeriod which is the duration of time that services may occur." )
-    protected Period active;
+    @Child(name = "servicePeriod", type = {Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Transaction window", formalDefinition="The date range of services associated with this account." )
+    protected Period servicePeriod;
 
     /**
      * The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.
      */
-    @Child(name = "coverage", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "coverage", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account", formalDefinition="The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account." )
     protected List<CoverageComponent> coverage;
 
     /**
-     * Indicates the organization, department, etc. with responsibility for the account.
+     * Indicates the service area, hospital, department, etc. with responsibility for managing the Account.
      */
-    @Child(name = "owner", type = {Organization.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Who is responsible?", formalDefinition="Indicates the organization, department, etc. with responsibility for the account." )
+    @Child(name = "owner", type = {Organization.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Entity managing the Account", formalDefinition="Indicates the service area, hospital, department, etc. with responsibility for managing the Account." )
     protected Reference owner;
 
     /**
-     * The actual object that is the target of the reference (Indicates the organization, department, etc. with responsibility for the account.)
+     * The actual object that is the target of the reference (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
      */
     protected Organization ownerTarget;
 
     /**
      * Provides additional information about what the account tracks and how it is used.
      */
-    @Child(name = "description", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Explanation of purpose/use", formalDefinition="Provides additional information about what the account tracks and how it is used." )
     protected StringType description;
 
     /**
-     * Parties financially responsible for the account.
+     * The parties responsible for balancing the account if other payment options fall short.
      */
-    @Child(name = "guarantor", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Responsible for the account", formalDefinition="Parties financially responsible for the account." )
+    @Child(name = "guarantor", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The parties ultimately responsible for balancing the Account", formalDefinition="The parties responsible for balancing the account if other payment options fall short." )
     protected List<GuarantorComponent> guarantor;
 
     /**
      * Reference to a parent Account.
      */
-    @Child(name = "partOf", type = {Account.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partOf", type = {Account.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reference to a parent Account", formalDefinition="Reference to a parent Account." )
     protected Reference partOf;
 
@@ -812,13 +836,21 @@ This period may be different to the coveragePeriod which is the duration of time
      */
     protected Account partOfTarget;
 
-    private static final long serialVersionUID = -1380598431L;
+    private static final long serialVersionUID = 1211238069L;
 
   /**
    * Constructor
    */
     public Account() {
       super();
+    }
+
+  /**
+   * Constructor
+   */
+    public Account(Enumeration<AccountStatus> status) {
+      super();
+      this.status = status;
     }
 
     /**
@@ -913,13 +945,9 @@ This period may be different to the coveragePeriod which is the duration of time
      * @param value Indicates whether the account is presently used/usable or not.
      */
     public Account setStatus(AccountStatus value) { 
-      if (value == null)
-        this.status = null;
-      else {
         if (this.status == null)
           this.status = new Enumeration<AccountStatus>(new AccountStatusEnumFactory());
         this.status.setValue(value);
-      }
       return this;
     }
 
@@ -997,91 +1025,89 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @return {@link #subject} (Identifies the patient, device, practitioner, location or other object the account is associated with.)
+     * @return {@link #subject} (Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.)
      */
-    public Reference getSubject() { 
+    public List<Reference> getSubject() { 
       if (this.subject == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.subject");
-        else if (Configuration.doAutoCreate())
-          this.subject = new Reference(); // cc
+        this.subject = new ArrayList<Reference>();
       return this.subject;
     }
 
-    public boolean hasSubject() { 
-      return this.subject != null && !this.subject.isEmpty();
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Account setSubject(List<Reference> theSubject) { 
+      this.subject = theSubject;
+      return this;
     }
 
-    /**
-     * @param value {@link #subject} (Identifies the patient, device, practitioner, location or other object the account is associated with.)
-     */
-    public Account setSubject(Reference value) { 
-      this.subject = value;
+    public boolean hasSubject() { 
+      if (this.subject == null)
+        return false;
+      for (Reference item : this.subject)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addSubject() { //3
+      Reference t = new Reference();
+      if (this.subject == null)
+        this.subject = new ArrayList<Reference>();
+      this.subject.add(t);
+      return t;
+    }
+
+    public Account addSubject(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.subject == null)
+        this.subject = new ArrayList<Reference>();
+      this.subject.add(t);
       return this;
     }
 
     /**
-     * @return {@link #subject} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Identifies the patient, device, practitioner, location or other object the account is associated with.)
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist
      */
-    public Resource getSubjectTarget() { 
+    public Reference getSubjectFirstRep() { 
+      if (getSubject().isEmpty()) {
+        addSubject();
+      }
+      return getSubject().get(0);
+    }
+
+    /**
+     * @deprecated Use Reference#setResource(IBaseResource) instead
+     */
+    @Deprecated
+    public List<Resource> getSubjectTarget() { 
+      if (this.subjectTarget == null)
+        this.subjectTarget = new ArrayList<Resource>();
       return this.subjectTarget;
     }
 
     /**
-     * @param value {@link #subject} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Identifies the patient, device, practitioner, location or other object the account is associated with.)
+     * @return {@link #servicePeriod} (The date range of services associated with this account.)
      */
-    public Account setSubjectTarget(Resource value) { 
-      this.subjectTarget = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #period} (Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc.)
-     */
-    public Period getPeriod() { 
-      if (this.period == null)
+    public Period getServicePeriod() { 
+      if (this.servicePeriod == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.period");
+          throw new Error("Attempt to auto-create Account.servicePeriod");
         else if (Configuration.doAutoCreate())
-          this.period = new Period(); // cc
-      return this.period;
+          this.servicePeriod = new Period(); // cc
+      return this.servicePeriod;
     }
 
-    public boolean hasPeriod() { 
-      return this.period != null && !this.period.isEmpty();
-    }
-
-    /**
-     * @param value {@link #period} (Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc.)
-     */
-    public Account setPeriod(Period value) { 
-      this.period = value;
-      return this;
+    public boolean hasServicePeriod() { 
+      return this.servicePeriod != null && !this.servicePeriod.isEmpty();
     }
 
     /**
-     * @return {@link #active} (Indicates the period of time over which the account is allowed to have transactions posted to it.
-This period may be different to the coveragePeriod which is the duration of time that services may occur.)
+     * @param value {@link #servicePeriod} (The date range of services associated with this account.)
      */
-    public Period getActive() { 
-      if (this.active == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.active");
-        else if (Configuration.doAutoCreate())
-          this.active = new Period(); // cc
-      return this.active;
-    }
-
-    public boolean hasActive() { 
-      return this.active != null && !this.active.isEmpty();
-    }
-
-    /**
-     * @param value {@link #active} (Indicates the period of time over which the account is allowed to have transactions posted to it.
-This period may be different to the coveragePeriod which is the duration of time that services may occur.)
-     */
-    public Account setActive(Period value) { 
-      this.active = value;
+    public Account setServicePeriod(Period value) { 
+      this.servicePeriod = value;
       return this;
     }
 
@@ -1139,7 +1165,7 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @return {@link #owner} (Indicates the organization, department, etc. with responsibility for the account.)
+     * @return {@link #owner} (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
      */
     public Reference getOwner() { 
       if (this.owner == null)
@@ -1155,7 +1181,7 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @param value {@link #owner} (Indicates the organization, department, etc. with responsibility for the account.)
+     * @param value {@link #owner} (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
      */
     public Account setOwner(Reference value) { 
       this.owner = value;
@@ -1163,7 +1189,7 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @return {@link #owner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the organization, department, etc. with responsibility for the account.)
+     * @return {@link #owner} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
      */
     public Organization getOwnerTarget() { 
       if (this.ownerTarget == null)
@@ -1175,7 +1201,7 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @param value {@link #owner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the organization, department, etc. with responsibility for the account.)
+     * @param value {@link #owner} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Indicates the service area, hospital, department, etc. with responsibility for managing the Account.)
      */
     public Account setOwnerTarget(Organization value) { 
       this.ownerTarget = value;
@@ -1232,7 +1258,7 @@ This period may be different to the coveragePeriod which is the duration of time
     }
 
     /**
-     * @return {@link #guarantor} (Parties financially responsible for the account.)
+     * @return {@link #guarantor} (The parties responsible for balancing the account if other payment options fall short.)
      */
     public List<GuarantorComponent> getGuarantor() { 
       if (this.guarantor == null)
@@ -1334,13 +1360,12 @@ This period may be different to the coveragePeriod which is the duration of time
         children.add(new Property("status", "code", "Indicates whether the account is presently used/usable or not.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "Categorizes the account for reporting and searching purposes.", 0, 1, type));
         children.add(new Property("name", "string", "Name used for the account when displaying it to humans in reports, etc.", 0, 1, name));
-        children.add(new Property("subject", "Reference(Patient|Device|Practitioner|Location|HealthcareService|Organization)", "Identifies the patient, device, practitioner, location or other object the account is associated with.", 0, 1, subject));
-        children.add(new Property("period", "Period", "Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc.", 0, 1, period));
-        children.add(new Property("active", "Period", "Indicates the period of time over which the account is allowed to have transactions posted to it.\nThis period may be different to the coveragePeriod which is the duration of time that services may occur.", 0, 1, active));
+        children.add(new Property("subject", "Reference(Patient|Device|Practitioner|PractitionerRole|Location|HealthcareService|Organization)", "Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.", 0, java.lang.Integer.MAX_VALUE, subject));
+        children.add(new Property("servicePeriod", "Period", "The date range of services associated with this account.", 0, 1, servicePeriod));
         children.add(new Property("coverage", "", "The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.", 0, java.lang.Integer.MAX_VALUE, coverage));
-        children.add(new Property("owner", "Reference(Organization)", "Indicates the organization, department, etc. with responsibility for the account.", 0, 1, owner));
+        children.add(new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner));
         children.add(new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description));
-        children.add(new Property("guarantor", "", "Parties financially responsible for the account.", 0, java.lang.Integer.MAX_VALUE, guarantor));
+        children.add(new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor));
         children.add(new Property("partOf", "Reference(Account)", "Reference to a parent Account.", 0, 1, partOf));
       }
 
@@ -1351,13 +1376,12 @@ This period may be different to the coveragePeriod which is the duration of time
         case -892481550: /*status*/  return new Property("status", "code", "Indicates whether the account is presently used/usable or not.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Categorizes the account for reporting and searching purposes.", 0, 1, type);
         case 3373707: /*name*/  return new Property("name", "string", "Name used for the account when displaying it to humans in reports, etc.", 0, 1, name);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Device|Practitioner|Location|HealthcareService|Organization)", "Identifies the patient, device, practitioner, location or other object the account is associated with.", 0, 1, subject);
-        case -991726143: /*period*/  return new Property("period", "Period", "Identifies the period of time the account applies to; e.g. accounts created per fiscal year, quarter, etc.", 0, 1, period);
-        case -1422950650: /*active*/  return new Property("active", "Period", "Indicates the period of time over which the account is allowed to have transactions posted to it.\nThis period may be different to the coveragePeriod which is the duration of time that services may occur.", 0, 1, active);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Device|Practitioner|PractitionerRole|Location|HealthcareService|Organization)", "Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.", 0, java.lang.Integer.MAX_VALUE, subject);
+        case 2129104086: /*servicePeriod*/  return new Property("servicePeriod", "Period", "The date range of services associated with this account.", 0, 1, servicePeriod);
         case -351767064: /*coverage*/  return new Property("coverage", "", "The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.", 0, java.lang.Integer.MAX_VALUE, coverage);
-        case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "Indicates the organization, department, etc. with responsibility for the account.", 0, 1, owner);
+        case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner);
         case -1724546052: /*description*/  return new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description);
-        case -188629045: /*guarantor*/  return new Property("guarantor", "", "Parties financially responsible for the account.", 0, java.lang.Integer.MAX_VALUE, guarantor);
+        case -188629045: /*guarantor*/  return new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Account)", "Reference to a parent Account.", 0, 1, partOf);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1371,9 +1395,8 @@ This period may be different to the coveragePeriod which is the duration of time
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<AccountStatus>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
-        case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // Period
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
+        case 2129104086: /*servicePeriod*/ return this.servicePeriod == null ? new Base[0] : new Base[] {this.servicePeriod}; // Period
         case -351767064: /*coverage*/ return this.coverage == null ? new Base[0] : this.coverage.toArray(new Base[this.coverage.size()]); // CoverageComponent
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
@@ -1401,13 +1424,10 @@ This period may be different to the coveragePeriod which is the duration of time
           this.name = castToString(value); // StringType
           return value;
         case -1867885268: // subject
-          this.subject = castToReference(value); // Reference
+          this.getSubject().add(castToReference(value)); // Reference
           return value;
-        case -991726143: // period
-          this.period = castToPeriod(value); // Period
-          return value;
-        case -1422950650: // active
-          this.active = castToPeriod(value); // Period
+        case 2129104086: // servicePeriod
+          this.servicePeriod = castToPeriod(value); // Period
           return value;
         case -351767064: // coverage
           this.getCoverage().add((CoverageComponent) value); // CoverageComponent
@@ -1441,11 +1461,9 @@ This period may be different to the coveragePeriod which is the duration of time
         } else if (name.equals("name")) {
           this.name = castToString(value); // StringType
         } else if (name.equals("subject")) {
-          this.subject = castToReference(value); // Reference
-        } else if (name.equals("period")) {
-          this.period = castToPeriod(value); // Period
-        } else if (name.equals("active")) {
-          this.active = castToPeriod(value); // Period
+          this.getSubject().add(castToReference(value));
+        } else if (name.equals("servicePeriod")) {
+          this.servicePeriod = castToPeriod(value); // Period
         } else if (name.equals("coverage")) {
           this.getCoverage().add((CoverageComponent) value);
         } else if (name.equals("owner")) {
@@ -1468,9 +1486,8 @@ This period may be different to the coveragePeriod which is the duration of time
         case -892481550:  return getStatusElement();
         case 3575610:  return getType(); 
         case 3373707:  return getNameElement();
-        case -1867885268:  return getSubject(); 
-        case -991726143:  return getPeriod(); 
-        case -1422950650:  return getActive(); 
+        case -1867885268:  return addSubject(); 
+        case 2129104086:  return getServicePeriod(); 
         case -351767064:  return addCoverage(); 
         case 106164915:  return getOwner(); 
         case -1724546052:  return getDescriptionElement();
@@ -1489,8 +1506,7 @@ This period may be different to the coveragePeriod which is the duration of time
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case -991726143: /*period*/ return new String[] {"Period"};
-        case -1422950650: /*active*/ return new String[] {"Period"};
+        case 2129104086: /*servicePeriod*/ return new String[] {"Period"};
         case -351767064: /*coverage*/ return new String[] {};
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case -1724546052: /*description*/ return new String[] {"string"};
@@ -1517,16 +1533,11 @@ This period may be different to the coveragePeriod which is the duration of time
           throw new FHIRException("Cannot call addChild on a primitive type Account.name");
         }
         else if (name.equals("subject")) {
-          this.subject = new Reference();
-          return this.subject;
+          return addSubject();
         }
-        else if (name.equals("period")) {
-          this.period = new Period();
-          return this.period;
-        }
-        else if (name.equals("active")) {
-          this.active = new Period();
-          return this.active;
+        else if (name.equals("servicePeriod")) {
+          this.servicePeriod = new Period();
+          return this.servicePeriod;
         }
         else if (name.equals("coverage")) {
           return addCoverage();
@@ -1565,9 +1576,12 @@ This period may be different to the coveragePeriod which is the duration of time
         dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
-        dst.subject = subject == null ? null : subject.copy();
-        dst.period = period == null ? null : period.copy();
-        dst.active = active == null ? null : active.copy();
+        if (subject != null) {
+          dst.subject = new ArrayList<Reference>();
+          for (Reference i : subject)
+            dst.subject.add(i.copy());
+        };
+        dst.servicePeriod = servicePeriod == null ? null : servicePeriod.copy();
         if (coverage != null) {
           dst.coverage = new ArrayList<CoverageComponent>();
           for (CoverageComponent i : coverage)
@@ -1596,10 +1610,9 @@ This period may be different to the coveragePeriod which is the duration of time
           return false;
         Account o = (Account) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
-           && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true) && compareDeep(period, o.period, true)
-           && compareDeep(active, o.active, true) && compareDeep(coverage, o.coverage, true) && compareDeep(owner, o.owner, true)
-           && compareDeep(description, o.description, true) && compareDeep(guarantor, o.guarantor, true) && compareDeep(partOf, o.partOf, true)
-          ;
+           && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true) && compareDeep(servicePeriod, o.servicePeriod, true)
+           && compareDeep(coverage, o.coverage, true) && compareDeep(owner, o.owner, true) && compareDeep(description, o.description, true)
+           && compareDeep(guarantor, o.guarantor, true) && compareDeep(partOf, o.partOf, true);
       }
 
       @Override
@@ -1615,7 +1628,7 @@ This period may be different to the coveragePeriod which is the duration of time
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
-          , name, subject, period, active, coverage, owner, description, guarantor, partOf
+          , name, subject, servicePeriod, coverage, owner, description, guarantor, partOf
           );
       }
 
@@ -1627,17 +1640,17 @@ This period may be different to the coveragePeriod which is the duration of time
  /**
    * Search parameter: <b>owner</b>
    * <p>
-   * Description: <b>Who is responsible?</b><br>
+   * Description: <b>Entity managing the Account</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.owner</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="owner", path="Account.owner", description="Who is responsible?", type="reference", target={Organization.class } )
+  @SearchParamDefinition(name="owner", path="Account.owner", description="Entity managing the Account", type="reference", target={Organization.class } )
   public static final String SP_OWNER = "owner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>owner</b>
    * <p>
-   * Description: <b>Who is responsible?</b><br>
+   * Description: <b>Entity managing the Account</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.owner</b><br>
    * </p>
@@ -1675,17 +1688,17 @@ This period may be different to the coveragePeriod which is the duration of time
    * <p>
    * Description: <b>Transaction window</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Account.period</b><br>
+   * Path: <b>Account.servicePeriod</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="period", path="Account.period", description="Transaction window", type="date" )
+  @SearchParamDefinition(name="period", path="Account.servicePeriod", description="Transaction window", type="date" )
   public static final String SP_PERIOD = "period";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>period</b>
    * <p>
    * Description: <b>Transaction window</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Account.period</b><br>
+   * Path: <b>Account.servicePeriod</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
@@ -1693,17 +1706,17 @@ This period may be different to the coveragePeriod which is the duration of time
  /**
    * Search parameter: <b>subject</b>
    * <p>
-   * Description: <b>What is account tied to?</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Account.subject", description="What is account tied to?", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class } )
+  @SearchParamDefinition(name="subject", path="Account.subject", description="The entity that caused the expenses", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
    * <p>
-   * Description: <b>What is account tied to?</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.subject</b><br>
    * </p>
@@ -1719,17 +1732,17 @@ This period may be different to the coveragePeriod which is the duration of time
  /**
    * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>What is account tied to?</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Account.subject", description="What is account tied to?", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>What is account tied to?</b><br>
+   * Description: <b>The entity that caused the expenses</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Account.subject</b><br>
    * </p>
@@ -1785,17 +1798,17 @@ This period may be different to the coveragePeriod which is the duration of time
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Account.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error", type="token" )
+  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error | on-hold | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Account.status</b><br>
    * </p>

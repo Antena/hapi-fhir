@@ -4,7 +4,7 @@ package ca.uhn.fhir.rest.server;
  * #%L
  * HAPI FHIR - Server Framework
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,7 @@ import ca.uhn.fhir.model.api.ResourceMetadataKeyEnum;
 import ca.uhn.fhir.model.primitive.InstantDt;
 import ca.uhn.fhir.model.valueset.BundleTypeEnum;
 import ca.uhn.fhir.parser.IParser;
-import ca.uhn.fhir.rest.api.Constants;
-import ca.uhn.fhir.rest.api.EncodingEnum;
-import ca.uhn.fhir.rest.api.PreferReturnEnum;
-import ca.uhn.fhir.rest.api.SummaryEnum;
+import ca.uhn.fhir.rest.api.*;
 import ca.uhn.fhir.rest.api.server.IRestfulResponse;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
@@ -60,6 +57,63 @@ public class RestfulServerUtils {
 	private static final HashSet<String> TEXT_ENCODE_ELEMENTS = new HashSet<String>(Arrays.asList("Bundle", "*.text", "*.(mandatory)"));
 	private static Map<FhirVersionEnum, FhirContext> myFhirContextMap = Collections.synchronizedMap(new HashMap<FhirVersionEnum, FhirContext>());
 
+	private enum NarrativeModeEnum {
+		NORMAL, ONLY, SUPPRESS;
+
+		public static NarrativeModeEnum valueOfCaseInsensitive(String theCode) {
+			return valueOf(NarrativeModeEnum.class, theCode.toUpperCase());
+		}
+	}
+
+	/**
+	 * Return type for {@link RestfulServerUtils#determineRequestEncodingNoDefault(RequestDetails)}
+	 */
+	public static class ResponseEncoding {
+		private final String myContentType;
+		private final EncodingEnum myEncoding;
+		private final Boolean myNonLegacy;
+
+		public ResponseEncoding(FhirContext theCtx, EncodingEnum theEncoding, String theContentType) {
+			super();
+			myEncoding = theEncoding;
+			myContentType = theContentType;
+			if (theContentType != null) {
+				FhirVersionEnum ctxtEnum = theCtx.getVersion().getVersion();
+				if (theContentType.equals(EncodingEnum.JSON_PLAIN_STRING) || theContentType.equals(EncodingEnum.XML_PLAIN_STRING)) {
+					myNonLegacy = ctxtEnum.isNewerThan(FhirVersionEnum.DSTU2_1);
+				} else {
+					myNonLegacy = ctxtEnum.isNewerThan(FhirVersionEnum.DSTU2_1) && !EncodingEnum.isLegacy(theContentType);
+				}
+			} else {
+				FhirVersionEnum ctxtEnum = theCtx.getVersion().getVersion();
+				if (ctxtEnum.isOlderThan(FhirVersionEnum.DSTU3)) {
+					myNonLegacy = null;
+				} else {
+					myNonLegacy = Boolean.TRUE;
+				}
+			}
+		}
+
+		public String getContentType() {
+			return myContentType;
+		}
+
+		public EncodingEnum getEncoding() {
+			return myEncoding;
+		}
+
+		public String getResourceContentType() {
+			if (Boolean.TRUE.equals(isNonLegacy())) {
+				return getEncoding().getResourceContentTypeNonLegacy();
+			}
+			return getEncoding().getResourceContentType();
+		}
+
+		Boolean isNonLegacy() {
+			return myNonLegacy;
+		}
+	}
+
 	public static void configureResponseParser(RequestDetails theRequestDetails, IParser parser) {
 		// Pretty print
 		boolean prettyPrint = RestfulServerUtils.prettyPrintResponse(theRequestDetails.getServer(), theRequestDetails);
@@ -81,9 +135,9 @@ public class RestfulServerUtils {
 		}
 
 		if (summaryMode != null) {
-			if (summaryMode.contains(SummaryEnum.COUNT)) {
+			if (summaryMode.contains(SummaryEnum.COUNT) && summaryMode.size() == 1) {
 				parser.setEncodeElements(Collections.singleton("Bundle.total"));
-			} else if (summaryMode.contains(SummaryEnum.TEXT)) {
+			} else if (summaryMode.contains(SummaryEnum.TEXT) && summaryMode.size() == 1) {
 				parser.setEncodeElements(TEXT_ENCODE_ELEMENTS);
 			} else {
 				parser.setSuppressNarratives(summaryMode.contains(SummaryEnum.DATA));
@@ -133,6 +187,18 @@ public class RestfulServerUtils {
 
 	public static String createPagingLink(Set<Include> theIncludes, String theServerBase, String theSearchId, int theOffset, int theCount, Map<String, String[]> theRequestParameters, boolean thePrettyPrint,
 													  BundleTypeEnum theBundleType) {
+		return createPagingLink(theIncludes, theServerBase, theSearchId, theOffset, theCount, theRequestParameters, thePrettyPrint,
+			theBundleType, null);
+	}
+
+	public static String createPagingLink(Set<Include> theIncludes, String theServerBase, String theSearchId, String thePageId, Map<String, String[]> theRequestParameters, boolean thePrettyPrint,
+													  BundleTypeEnum theBundleType) {
+		return createPagingLink(theIncludes, theServerBase, theSearchId, null, null, theRequestParameters, thePrettyPrint,
+			theBundleType, thePageId);
+	}
+
+	private static String createPagingLink(Set<Include> theIncludes, String theServerBase, String theSearchId, Integer theOffset, Integer theCount, Map<String, String[]> theRequestParameters, boolean thePrettyPrint,
+														BundleTypeEnum theBundleType, String thePageId) {
 		StringBuilder b = new StringBuilder();
 		b.append(theServerBase);
 		b.append('?');
@@ -140,14 +206,24 @@ public class RestfulServerUtils {
 		b.append('=');
 		b.append(UrlUtil.escapeUrlParam(theSearchId));
 
-		b.append('&');
-		b.append(Constants.PARAM_PAGINGOFFSET);
-		b.append('=');
-		b.append(theOffset);
-		b.append('&');
-		b.append(Constants.PARAM_COUNT);
-		b.append('=');
-		b.append(theCount);
+		if (theOffset != null) {
+			b.append('&');
+			b.append(Constants.PARAM_PAGINGOFFSET);
+			b.append('=');
+			b.append(theOffset);
+		}
+		if (theCount != null) {
+			b.append('&');
+			b.append(Constants.PARAM_COUNT);
+			b.append('=');
+			b.append(theCount);
+		}
+		if (isNotBlank(thePageId)) {
+			b.append('&');
+			b.append(Constants.PARAM_PAGEID);
+			b.append('=');
+			b.append(UrlUtil.escapeUrlParam(thePageId));
+		}
 		String[] strings = theRequestParameters.get(Constants.PARAM_FORMAT);
 		if (strings != null && strings.length > 0) {
 			b.append('&');
@@ -253,6 +329,15 @@ public class RestfulServerUtils {
 	 * equally, returns thePrefer.
 	 */
 	public static ResponseEncoding determineResponseEncodingNoDefault(RequestDetails theReq, EncodingEnum thePrefer) {
+		return determineResponseEncodingNoDefault(theReq, thePrefer, null);
+	}
+
+	/**
+	 * Try to determing the response content type, given the request Accept header and
+	 * _format parameter. If a value is provided to thePreferContents, we'll
+	 * prefer to return that value over the native FHIR value.
+	 */
+	public static ResponseEncoding determineResponseEncodingNoDefault(RequestDetails theReq, EncodingEnum thePrefer, String thePreferContentType) {
 		String[] format = theReq.getParameters().get(Constants.PARAM_FORMAT);
 		if (format != null) {
 			for (String nextFormat : format) {
@@ -314,12 +399,12 @@ public class RestfulServerUtils {
 					ResponseEncoding encoding;
 					if (endSpaceIndex == -1) {
 						if (startSpaceIndex == 0) {
-							encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken);
+							encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken, thePreferContentType);
 						} else {
-							encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken.substring(startSpaceIndex));
+							encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken.substring(startSpaceIndex), thePreferContentType);
 						}
 					} else {
-						encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken.substring(startSpaceIndex, endSpaceIndex));
+						encoding = getEncodingForContentType(theReq.getServer().getFhirContext(), strict, nextToken.substring(startSpaceIndex, endSpaceIndex), thePreferContentType);
 						String remaining = nextToken.substring(endSpaceIndex + 1);
 						StringTokenizer qualifierTok = new StringTokenizer(remaining, ";");
 						while (qualifierTok.hasMoreTokens()) {
@@ -445,12 +530,29 @@ public class RestfulServerUtils {
 		return retVal;
 	}
 
-	private static ResponseEncoding getEncodingForContentType(FhirContext theFhirContext, boolean theStrict, String theContentType) {
+	private static FhirContext getContextForVersion(FhirContext theContext, FhirVersionEnum theForVersion) {
+		FhirContext context = theContext;
+		if (context.getVersion().getVersion() != theForVersion) {
+			context = myFhirContextMap.get(theForVersion);
+			if (context == null) {
+				context = theForVersion.newContext();
+				myFhirContextMap.put(theForVersion, context);
+			}
+		}
+		return context;
+	}
+
+	private static ResponseEncoding getEncodingForContentType(FhirContext theFhirContext, boolean theStrict, String theContentType, String thePreferContentType) {
 		EncodingEnum encoding;
 		if (theStrict) {
 			encoding = EncodingEnum.forContentTypeStrict(theContentType);
 		} else {
 			encoding = EncodingEnum.forContentType(theContentType);
+		}
+		if (isNotBlank(thePreferContentType)) {
+			if (thePreferContentType.equals(theContentType)) {
+				return new ResponseEncoding(theFhirContext, encoding, theContentType);
+			}
 		}
 		if (encoding == null) {
 			return null;
@@ -477,18 +579,6 @@ public class RestfulServerUtils {
 		configureResponseParser(theRequestDetails, parser);
 
 		return parser;
-	}
-
-	private static FhirContext getContextForVersion(FhirContext theContext, FhirVersionEnum theForVersion) {
-		FhirContext context = theContext;
-		if (context.getVersion().getVersion() != theForVersion) {
-			context = myFhirContextMap.get(theForVersion);
-			if (context == null) {
-				context = theForVersion.newContext();
-				myFhirContextMap.put(theForVersion, context);
-			}
-		}
-		return context;
 	}
 
 	public static Set<String> parseAcceptHeaderAndReturnHighestRankedOptions(HttpServletRequest theRequest) {
@@ -617,33 +707,28 @@ public class RestfulServerUtils {
 		}
 
 		if (theAddContentLocationHeader && fullId != null) {
-			if (theServer.getFhirContext().getVersion().getVersion().isOlderThan(FhirVersionEnum.DSTU3)) {
-				response.addHeader(Constants.HEADER_CONTENT_LOCATION, fullId.getValue());
+			if (theRequestDetails.getRequestType() == RequestTypeEnum.POST) {
+				response.addHeader(Constants.HEADER_LOCATION, fullId.getValue());
 			}
-			response.addHeader(Constants.HEADER_LOCATION, fullId.getValue());
+			response.addHeader(Constants.HEADER_CONTENT_LOCATION, fullId.getValue());
 		}
 
 		if (theServer.getETagSupport() == ETagSupportEnum.ENABLED) {
 			if (fullId != null && fullId.hasVersionIdPart()) {
-				response.addHeader(Constants.HEADER_ETAG, "W/\"" + fullId.getVersionIdPart() + '"');
+				String versionIdPart = fullId.getVersionIdPart();
+				response.addHeader(Constants.HEADER_ETAG, createEtag(versionIdPart));
 			} else if (theResource != null && theResource.getMeta() != null && isNotBlank(theResource.getMeta().getVersionId())) {
-				response.addHeader(Constants.HEADER_ETAG, "W/\"" + theResource.getMeta().getVersionId() + '"');
+				String versionId = theResource.getMeta().getVersionId();
+				response.addHeader(Constants.HEADER_ETAG, createEtag(versionId));
 			}
 		}
 
+		// Binary handling
 		String contentType;
-		if (theResource instanceof IBaseBinary && responseEncoding == null) {
+		if (theResource instanceof IBaseBinary) {
 			IBaseBinary bin = (IBaseBinary) theResource;
-			if (isNotBlank(bin.getContentType())) {
-				contentType = bin.getContentType();
-			} else {
-				contentType = Constants.CT_OCTET_STREAM;
-			}
 
-			// Force binary resources to download - This is a security measure to prevent
-			// malicious images or HTML blocks being served up as content.
-			response.addHeader(Constants.HEADER_CONTENT_DISPOSITION, "Attachment;");
-
+			// Add a security context header
 			IBaseReference securityContext = BinaryUtil.getSecurityContext(theServer.getFhirContext(), bin);
 			if (securityContext != null) {
 				String securityContextRef = securityContext.getReferenceElement().getValue();
@@ -652,7 +737,21 @@ public class RestfulServerUtils {
 				}
 			}
 
-			return response.sendAttachmentResponse(bin, theStatusCode, contentType);
+			// If the user didn't explicitly request FHIR as a response, return binary
+			// content directly
+			if (responseEncoding == null) {
+				if (isNotBlank(bin.getContentType())) {
+					contentType = bin.getContentType();
+				} else {
+					contentType = Constants.CT_OCTET_STREAM;
+				}
+
+				// Force binary resources to download - This is a security measure to prevent
+				// malicious images or HTML blocks being served up as content.
+				response.addHeader(Constants.HEADER_CONTENT_DISPOSITION, "Attachment;");
+
+				return response.sendAttachmentResponse(bin, theStatusCode, contentType);
+			}
 		}
 
 		// Ok, we're not serving a binary resource, so apply default encoding
@@ -660,7 +759,7 @@ public class RestfulServerUtils {
 			responseEncoding = new ResponseEncoding(theServer.getFhirContext(), theServer.getDefaultResponseEncoding(), null);
 		}
 
-		boolean encodingDomainResourceAsText = theSummaryMode.contains(SummaryEnum.TEXT);
+		boolean encodingDomainResourceAsText = theSummaryMode.size() == 1 && theSummaryMode.contains(SummaryEnum.TEXT);
 		if (encodingDomainResourceAsText) {
 			/*
 			 * If the user requests "text" for a bundle, only suppress the non text elements in the Element.entry.resource
@@ -703,7 +802,15 @@ public class RestfulServerUtils {
 		if (theResource == null) {
 			// No response is being returned
 		} else if (encodingDomainResourceAsText && theResource instanceof IResource) {
+			// DSTU2
 			writer.append(((IResource) theResource).getText().getDiv().getValueAsString());
+		} else if (encodingDomainResourceAsText && theResource instanceof IDomainResource) {
+			// DSTU3+
+			try {
+				writer.append(((IDomainResource) theResource).getText().getDivAsString());
+			} catch (Exception e) {
+				throw new InternalErrorException(e);
+			}
 		} else {
 			FhirVersionEnum forVersion = theResource.getStructureFhirVersionEnum();
 			IParser parser = getNewParser(theServer.getFhirContext(), forVersion, theRequestDetails);
@@ -711,19 +818,6 @@ public class RestfulServerUtils {
 		}
 		//FIXME resource leak
 		return response.sendWriterResponse(theStatusCode, contentType, charset, writer);
-	}
-
-	public static Integer tryToExtractNamedParameter(RequestDetails theRequest, String theParamName) {
-		String[] retVal = theRequest.getParameters().get(theParamName);
-		if (retVal == null) {
-			return null;
-		}
-		try {
-			return Integer.parseInt(retVal[0]);
-		} catch (NumberFormatException e) {
-			ourLog.debug("Failed to parse {} value '{}': {}", new Object[]{theParamName, retVal[0], e});
-			return null;
-		}
 	}
 
 	// static Integer tryToExtractNamedParameter(HttpServletRequest theRequest, String name) {
@@ -739,60 +833,26 @@ public class RestfulServerUtils {
 	// return count;
 	// }
 
+	public static String createEtag(String theVersionId) {
+		return "W/\"" + theVersionId + '"';
+	}
+
+	public static Integer tryToExtractNamedParameter(RequestDetails theRequest, String theParamName) {
+		String[] retVal = theRequest.getParameters().get(theParamName);
+		if (retVal == null) {
+			return null;
+		}
+		try {
+			return Integer.parseInt(retVal[0]);
+		} catch (NumberFormatException e) {
+			ourLog.debug("Failed to parse {} value '{}': {}", new Object[]{theParamName, retVal[0], e});
+			return null;
+		}
+	}
+
 	public static void validateResourceListNotNull(List<? extends IBaseResource> theResourceList) {
 		if (theResourceList == null) {
 			throw new InternalErrorException("IBundleProvider returned a null list of resources - This is not allowed");
-		}
-	}
-
-	private enum NarrativeModeEnum {
-		NORMAL, ONLY, SUPPRESS;
-
-		public static NarrativeModeEnum valueOfCaseInsensitive(String theCode) {
-			return valueOf(NarrativeModeEnum.class, theCode.toUpperCase());
-		}
-	}
-
-	/**
-	 * Return type for {@link RestfulServerUtils#determineRequestEncodingNoDefault(RequestDetails)}
-	 */
-	public static class ResponseEncoding {
-		private final EncodingEnum myEncoding;
-		private final Boolean myNonLegacy;
-
-		public ResponseEncoding(FhirContext theCtx, EncodingEnum theEncoding, String theContentType) {
-			super();
-			myEncoding = theEncoding;
-			if (theContentType != null) {
-				FhirVersionEnum ctxtEnum = theCtx.getVersion().getVersion();
-				if (theContentType.equals(EncodingEnum.JSON_PLAIN_STRING) || theContentType.equals(EncodingEnum.XML_PLAIN_STRING)) {
-					myNonLegacy = ctxtEnum.isNewerThan(FhirVersionEnum.DSTU2_1);
-				} else {
-					myNonLegacy = ctxtEnum.isNewerThan(FhirVersionEnum.DSTU2_1) && !EncodingEnum.isLegacy(theContentType);
-				}
-			} else {
-				FhirVersionEnum ctxtEnum = theCtx.getVersion().getVersion();
-				if (ctxtEnum.isOlderThan(FhirVersionEnum.DSTU3)) {
-					myNonLegacy = null;
-				} else {
-					myNonLegacy = Boolean.TRUE;
-				}
-			}
-		}
-
-		public EncodingEnum getEncoding() {
-			return myEncoding;
-		}
-
-		public String getResourceContentType() {
-			if (Boolean.TRUE.equals(isNonLegacy())) {
-				return getEncoding().getResourceContentTypeNonLegacy();
-			}
-			return getEncoding().getResourceContentType();
-		}
-
-		public Boolean isNonLegacy() {
-			return myNonLegacy;
 		}
 	}
 

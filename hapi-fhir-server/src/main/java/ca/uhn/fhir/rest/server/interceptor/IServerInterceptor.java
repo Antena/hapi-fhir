@@ -4,7 +4,7 @@ package ca.uhn.fhir.rest.server.interceptor;
  * #%L
  * HAPI FHIR - Server Framework
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ import ca.uhn.fhir.rest.server.IRestfulServerDefaults;
 import ca.uhn.fhir.rest.server.exceptions.AuthenticationException;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import ca.uhn.fhir.rest.server.servlet.ServletRequestDetails;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.instance.model.api.IIdType;
 
@@ -260,6 +262,10 @@ public interface IServerInterceptor {
 	 * This method is called after all processing is completed for a request, but only if the
 	 * request completes normally (i.e. no exception is thrown).
 	 * <p>
+	 * This method should not throw any exceptions. Any exception that is thrown by this
+	 * method will be logged, but otherwise not acted upon.
+	 * </p>
+	 * <p>
 	 * Note that this individual interceptors will have this method called in the reverse order from the order in
 	 * which the interceptors were registered with the server.
 	 * </p>
@@ -366,6 +372,15 @@ public interface IServerInterceptor {
 		 */
 		public String getResourceType() {
 			return myResourceType;
+		}
+
+		@Override
+		public String toString() {
+			return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("id", myId)
+				.append("resourceType", myResourceType)
+				.append("resource", myResource)
+				.toString();
 		}
 
 		/**

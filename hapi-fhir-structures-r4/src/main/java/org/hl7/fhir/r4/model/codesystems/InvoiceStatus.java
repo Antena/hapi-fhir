@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -37,23 +37,23 @@ import org.hl7.fhir.exceptions.FHIRException;
 public enum InvoiceStatus {
 
         /**
-         * the invoice has been prepared but not yet finalized
+         * the invoice has been prepared but not yet finalized.
          */
         DRAFT, 
         /**
-         * the invoice has been finalized and sent to the recipient
+         * the invoice has been finalized and sent to the recipient.
          */
         ISSUED, 
         /**
-         * the invoice has been balaced / completely paid
+         * the invoice has been balaced / completely paid.
          */
         BALANCED, 
         /**
-         * the invoice was cancelled
+         * the invoice was cancelled.
          */
         CANCELLED, 
         /**
-         * the invoice was determined as entered in error before it was issued
+         * the invoice was determined as entered in error before it was issued.
          */
         ENTEREDINERROR, 
         /**
@@ -90,11 +90,11 @@ public enum InvoiceStatus {
         }
         public String getDefinition() {
           switch (this) {
-            case DRAFT: return "the invoice has been prepared but not yet finalized";
-            case ISSUED: return "the invoice has been finalized and sent to the recipient";
-            case BALANCED: return "the invoice has been balaced / completely paid";
-            case CANCELLED: return "the invoice was cancelled";
-            case ENTEREDINERROR: return "the invoice was determined as entered in error before it was issued";
+            case DRAFT: return "the invoice has been prepared but not yet finalized.";
+            case ISSUED: return "the invoice has been finalized and sent to the recipient.";
+            case BALANCED: return "the invoice has been balaced / completely paid.";
+            case CANCELLED: return "the invoice was cancelled.";
+            case ENTEREDINERROR: return "the invoice was determined as entered in error before it was issued.";
             default: return "?";
           }
         }

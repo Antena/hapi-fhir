@@ -1,11 +1,12 @@
 package ca.uhn.fhir.jpa.dao.r4;
 
 import ca.uhn.fhir.jpa.dao.DaoConfig;
-import ca.uhn.fhir.jpa.dao.SearchParameterMap;
+import ca.uhn.fhir.jpa.searchparam.SearchParameterMap;
 import ca.uhn.fhir.jpa.dao.data.ISearchDao;
 import ca.uhn.fhir.jpa.entity.Search;
+import ca.uhn.fhir.jpa.entity.SearchStatusEnum;
 import ca.uhn.fhir.jpa.search.StaleSearchDeletingSvcImpl;
-import ca.uhn.fhir.jpa.util.StopWatch;
+import ca.uhn.fhir.util.StopWatch;
 import ca.uhn.fhir.rest.api.server.IBundleProvider;
 import ca.uhn.fhir.rest.param.StringParam;
 import org.apache.commons.lang3.Validate;
@@ -32,6 +33,7 @@ import static ca.uhn.fhir.jpa.util.TestUtil.sleepAtLeast;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("Duplicates")
 public class FhirResourceDaoR4SearchPageExpiryTest extends BaseJpaR4Test {
 	private static final Logger ourLog = LoggerFactory.getLogger(FhirResourceDaoR4SearchPageExpiryTest.class);
 
@@ -75,6 +77,7 @@ public class FhirResourceDaoR4SearchPageExpiryTest extends BaseJpaR4Test {
 		myDaoConfig.setExpireSearchResultsAfterMillis(1000L);
 		myDaoConfig.setReuseCachedSearchResultsForMillis(500L);
 		long start = System.currentTimeMillis();
+		StaleSearchDeletingSvcImpl.setNowForUnitTests(start);
 
 		final String searchUuid1;
 		{
@@ -403,7 +406,7 @@ public class FhirResourceDaoR4SearchPageExpiryTest extends BaseJpaR4Test {
 				Search search = null;
 				for (int i = 0; i < 20 && search == null; i++) {
 					search = theSearchEntityDao.findByUuid(theUuid);
-					if (search == null) {
+					if (search == null || search.getStatus() == SearchStatusEnum.LOADING) {
 						sleepAtLeast(100);
 					}
 				}

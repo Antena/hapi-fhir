@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -44,9 +44,9 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import org.hl7.fhir.instance.model.api.*;
 import org.hl7.fhir.exceptions.FHIRException;
 /**
- * Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.
+ * Details and position information for a physical place where services are provided and resources and participants may be stored, found, contained, or accommodated.
  */
-@ResourceDef(name="Location", profile="http://hl7.org/fhir/Profile/Location")
+@ResourceDef(name="Location", profile="http://hl7.org/fhir/StructureDefinition/Location")
 public class Location extends DomainResource {
 
     public enum LocationStatus {
@@ -251,31 +251,31 @@ public class Location extends DomainResource {
 
     public enum DaysOfWeek {
         /**
-         * Monday
+         * Monday.
          */
         MON, 
         /**
-         * Tuesday
+         * Tuesday.
          */
         TUE, 
         /**
-         * Wednesday
+         * Wednesday.
          */
         WED, 
         /**
-         * Thursday
+         * Thursday.
          */
         THU, 
         /**
-         * Friday
+         * Friday.
          */
         FRI, 
         /**
-         * Saturday
+         * Saturday.
          */
         SAT, 
         /**
-         * Sunday
+         * Sunday.
          */
         SUN, 
         /**
@@ -330,13 +330,13 @@ public class Location extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case MON: return "Monday";
-            case TUE: return "Tuesday";
-            case WED: return "Wednesday";
-            case THU: return "Thursday";
-            case FRI: return "Friday";
-            case SAT: return "Saturday";
-            case SUN: return "Sunday";
+            case MON: return "Monday.";
+            case TUE: return "Tuesday.";
+            case WED: return "Wednesday.";
+            case THU: return "Thursday.";
+            case FRI: return "Friday.";
+            case SAT: return "Saturday.";
+            case SUN: return "Sunday.";
             default: return "?";
           }
         }
@@ -1213,11 +1213,11 @@ public class Location extends DomainResource {
     protected Enumeration<LocationStatus> status;
 
     /**
-     * The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.
+     * The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.
      */
     @Child(name = "operationalStatus", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The Operational status of the location (typically only for a bed/room)", formalDefinition="The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/v2-0116")
+    @Description(shortDefinition="The operational status of the location (typically only for a bed/room)", formalDefinition="The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0116")
     protected Coding operationalStatus;
 
     /**
@@ -1228,10 +1228,10 @@ public class Location extends DomainResource {
     protected StringType name;
 
     /**
-     * A list of alternate names that the location is known as, or was known as in the past.
+     * A list of alternate names that the location is known as, or was known as, in the past.
      */
     @Child(name = "alias", type = {StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A list of alternate names that the location is known as, or was known as in the past", formalDefinition="A list of alternate names that the location is known as, or was known as in the past." )
+    @Description(shortDefinition="A list of alternate names that the location is known as, or was known as, in the past", formalDefinition="A list of alternate names that the location is known as, or was known as, in the past." )
     protected List<StringType> alias;
 
     /**
@@ -1252,10 +1252,10 @@ public class Location extends DomainResource {
     /**
      * Indicates the type of function performed at the location.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Type of function performed", formalDefinition="Indicates the type of function performed at the location." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/v3-ServiceDeliveryLocationRoleType")
-    protected CodeableConcept type;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType")
+    protected List<CodeableConcept> type;
 
     /**
      * The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.
@@ -1299,14 +1299,14 @@ public class Location extends DomainResource {
     protected Organization managingOrganizationTarget;
 
     /**
-     * Another Location which this Location is physically part of.
+     * Another Location of which this Location is physically a part of.
      */
     @Child(name = "partOf", type = {Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Another Location this one is physically part of", formalDefinition="Another Location which this Location is physically part of." )
+    @Description(shortDefinition="Another Location this one is physically a part of", formalDefinition="Another Location of which this Location is physically a part of." )
     protected Reference partOf;
 
     /**
-     * The actual object that is the target of the reference (Another Location which this Location is physically part of.)
+     * The actual object that is the target of the reference (Another Location of which this Location is physically a part of.)
      */
     protected Location partOfTarget;
 
@@ -1336,7 +1336,7 @@ public class Location extends DomainResource {
     protected List<Endpoint> endpointTarget;
 
 
-    private static final long serialVersionUID = -999560379L;
+    private static final long serialVersionUID = -2126621333L;
 
   /**
    * Constructor
@@ -1448,7 +1448,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #operationalStatus} (The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.)
+     * @return {@link #operationalStatus} (The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.)
      */
     public Coding getOperationalStatus() { 
       if (this.operationalStatus == null)
@@ -1464,7 +1464,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @param value {@link #operationalStatus} (The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.)
+     * @param value {@link #operationalStatus} (The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.)
      */
     public Location setOperationalStatus(Coding value) { 
       this.operationalStatus = value;
@@ -1521,7 +1521,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #alias} (A list of alternate names that the location is known as, or was known as in the past.)
+     * @return {@link #alias} (A list of alternate names that the location is known as, or was known as, in the past.)
      */
     public List<StringType> getAlias() { 
       if (this.alias == null)
@@ -1547,7 +1547,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #alias} (A list of alternate names that the location is known as, or was known as in the past.)
+     * @return {@link #alias} (A list of alternate names that the location is known as, or was known as, in the past.)
      */
     public StringType addAliasElement() {//2 
       StringType t = new StringType();
@@ -1558,7 +1558,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @param value {@link #alias} (A list of alternate names that the location is known as, or was known as in the past.)
+     * @param value {@link #alias} (A list of alternate names that the location is known as, or was known as, in the past.)
      */
     public Location addAlias(String value) { //1
       StringType t = new StringType();
@@ -1570,13 +1570,13 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @param value {@link #alias} (A list of alternate names that the location is known as, or was known as in the past.)
+     * @param value {@link #alias} (A list of alternate names that the location is known as, or was known as, in the past.)
      */
     public boolean hasAlias(String value) { 
       if (this.alias == null)
         return false;
       for (StringType v : this.alias)
-        if (v.equals(value)) // string
+        if (v.getValue().equals(value)) // string
           return true;
       return false;
     }
@@ -1682,25 +1682,54 @@ public class Location extends DomainResource {
     /**
      * @return {@link #type} (Indicates the type of function performed at the location.)
      */
-    public CodeableConcept getType() { 
+    public List<CodeableConcept> getType() { 
       if (this.type == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Location.type");
-        else if (Configuration.doAutoCreate())
-          this.type = new CodeableConcept(); // cc
+        this.type = new ArrayList<CodeableConcept>();
       return this.type;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Location setType(List<CodeableConcept> theType) { 
+      this.type = theType;
+      return this;
+    }
+
     public boolean hasType() { 
-      return this.type != null && !this.type.isEmpty();
+      if (this.type == null)
+        return false;
+      for (CodeableConcept item : this.type)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addType() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.type == null)
+        this.type = new ArrayList<CodeableConcept>();
+      this.type.add(t);
+      return t;
+    }
+
+    public Location addType(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.type == null)
+        this.type = new ArrayList<CodeableConcept>();
+      this.type.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #type} (Indicates the type of function performed at the location.)
+     * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist
      */
-    public Location setType(CodeableConcept value) { 
-      this.type = value;
-      return this;
+    public CodeableConcept getTypeFirstRep() { 
+      if (getType().isEmpty()) {
+        addType();
+      }
+      return getType().get(0);
     }
 
     /**
@@ -1873,7 +1902,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #partOf} (Another Location which this Location is physically part of.)
+     * @return {@link #partOf} (Another Location of which this Location is physically a part of.)
      */
     public Reference getPartOf() { 
       if (this.partOf == null)
@@ -1889,7 +1918,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @param value {@link #partOf} (Another Location which this Location is physically part of.)
+     * @param value {@link #partOf} (Another Location of which this Location is physically a part of.)
      */
     public Location setPartOf(Reference value) { 
       this.partOf = value;
@@ -1897,7 +1926,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Another Location which this Location is physically part of.)
+     * @return {@link #partOf} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Another Location of which this Location is physically a part of.)
      */
     public Location getPartOfTarget() { 
       if (this.partOfTarget == null)
@@ -1909,7 +1938,7 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Another Location which this Location is physically part of.)
+     * @param value {@link #partOf} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Another Location of which this Location is physically a part of.)
      */
     public Location setPartOfTarget(Location value) { 
       this.partOfTarget = value;
@@ -2097,18 +2126,18 @@ public class Location extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique code or number identifying the location to its users.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "The status property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.", 0, 1, status));
-        children.add(new Property("operationalStatus", "Coding", "The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.", 0, 1, operationalStatus));
+        children.add(new Property("operationalStatus", "Coding", "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.", 0, 1, operationalStatus));
         children.add(new Property("name", "string", "Name of the location as used by humans. Does not need to be unique.", 0, 1, name));
-        children.add(new Property("alias", "string", "A list of alternate names that the location is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias));
+        children.add(new Property("alias", "string", "A list of alternate names that the location is known as, or was known as, in the past.", 0, java.lang.Integer.MAX_VALUE, alias));
         children.add(new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description));
         children.add(new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode));
-        children.add(new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, 1, type));
+        children.add(new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("telecom", "ContactPoint", "The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("address", "Address", "Physical location.", 0, 1, address));
         children.add(new Property("physicalType", "CodeableConcept", "Physical form of the location, e.g. building, room, vehicle, road.", 0, 1, physicalType));
         children.add(new Property("position", "", "The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).", 0, 1, position));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization responsible for the provisioning and upkeep of the location.", 0, 1, managingOrganization));
-        children.add(new Property("partOf", "Reference(Location)", "Another Location which this Location is physically part of.", 0, 1, partOf));
+        children.add(new Property("partOf", "Reference(Location)", "Another Location of which this Location is physically a part of.", 0, 1, partOf));
         children.add(new Property("hoursOfOperation", "", "What days/times during a week is this location usually open.", 0, java.lang.Integer.MAX_VALUE, hoursOfOperation));
         children.add(new Property("availabilityExceptions", "string", "A description of when the locations opening ours are different to normal, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as detailed in the opening hours Times.", 0, 1, availabilityExceptions));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the location.", 0, java.lang.Integer.MAX_VALUE, endpoint));
@@ -2119,18 +2148,18 @@ public class Location extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique code or number identifying the location to its users.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "The status property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.", 0, 1, status);
-        case -2103166364: /*operationalStatus*/  return new Property("operationalStatus", "Coding", "The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.", 0, 1, operationalStatus);
+        case -2103166364: /*operationalStatus*/  return new Property("operationalStatus", "Coding", "The operational status covers operation values most relevant to beds (but can also apply to rooms/units/chairs/etc. such as an isolation unit/dialysis chair). This typically covers concepts such as contamination, housekeeping, and other activities like maintenance.", 0, 1, operationalStatus);
         case 3373707: /*name*/  return new Property("name", "string", "Name of the location as used by humans. Does not need to be unique.", 0, 1, name);
-        case 92902992: /*alias*/  return new Property("alias", "string", "A list of alternate names that the location is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias);
+        case 92902992: /*alias*/  return new Property("alias", "string", "A list of alternate names that the location is known as, or was known as, in the past.", 0, java.lang.Integer.MAX_VALUE, alias);
         case -1724546052: /*description*/  return new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description);
         case 3357091: /*mode*/  return new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode);
-        case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, 1, type);
+        case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1147692044: /*address*/  return new Property("address", "Address", "Physical location.", 0, 1, address);
         case -1474715471: /*physicalType*/  return new Property("physicalType", "CodeableConcept", "Physical form of the location, e.g. building, room, vehicle, road.", 0, 1, physicalType);
         case 747804969: /*position*/  return new Property("position", "", "The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).", 0, 1, position);
         case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization responsible for the provisioning and upkeep of the location.", 0, 1, managingOrganization);
-        case -995410646: /*partOf*/  return new Property("partOf", "Reference(Location)", "Another Location which this Location is physically part of.", 0, 1, partOf);
+        case -995410646: /*partOf*/  return new Property("partOf", "Reference(Location)", "Another Location of which this Location is physically a part of.", 0, 1, partOf);
         case -1588872511: /*hoursOfOperation*/  return new Property("hoursOfOperation", "", "What days/times during a week is this location usually open.", 0, java.lang.Integer.MAX_VALUE, hoursOfOperation);
         case -1149143617: /*availabilityExceptions*/  return new Property("availabilityExceptions", "string", "A description of when the locations opening ours are different to normal, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as detailed in the opening hours Times.", 0, 1, availabilityExceptions);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the location.", 0, java.lang.Integer.MAX_VALUE, endpoint);
@@ -2149,7 +2178,7 @@ public class Location extends DomainResource {
         case 92902992: /*alias*/ return this.alias == null ? new Base[0] : this.alias.toArray(new Base[this.alias.size()]); // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<LocationMode>
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // Address
         case -1474715471: /*physicalType*/ return this.physicalType == null ? new Base[0] : new Base[] {this.physicalType}; // CodeableConcept
@@ -2191,7 +2220,7 @@ public class Location extends DomainResource {
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
           return value;
         case 3575610: // type
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.getType().add(castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1429363305: // telecom
           this.getTelecom().add(castToContactPoint(value)); // ContactPoint
@@ -2244,7 +2273,7 @@ public class Location extends DomainResource {
           value = new LocationModeEnumFactory().fromType(castToCode(value));
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
         } else if (name.equals("type")) {
-          this.type = castToCodeableConcept(value); // CodeableConcept
+          this.getType().add(castToCodeableConcept(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(castToContactPoint(value));
         } else if (name.equals("address")) {
@@ -2278,7 +2307,7 @@ public class Location extends DomainResource {
         case 92902992:  return addAliasElement();
         case -1724546052:  return getDescriptionElement();
         case 3357091:  return getModeElement();
-        case 3575610:  return getType(); 
+        case 3575610:  return addType(); 
         case -1429363305:  return addTelecom(); 
         case -1147692044:  return getAddress(); 
         case -1474715471:  return getPhysicalType(); 
@@ -2343,8 +2372,7 @@ public class Location extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type Location.mode");
         }
         else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+          return addType();
         }
         else if (name.equals("telecom")) {
           return addTelecom();
@@ -2405,7 +2433,11 @@ public class Location extends DomainResource {
         };
         dst.description = description == null ? null : description.copy();
         dst.mode = mode == null ? null : mode.copy();
-        dst.type = type == null ? null : type.copy();
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
         if (telecom != null) {
           dst.telecom = new ArrayList<ContactPoint>();
           for (ContactPoint i : telecom)
@@ -2519,30 +2551,6 @@ public class Location extends DomainResource {
    * the path value of "<b>Location:partof</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("Location:partof").toLocked();
-
- /**
-   * Search parameter: <b>near-distance</b>
-   * <p>
-   * Description: <b>A distance quantity to limit the near search to locations within a specific distance
-
-Requires the near parameter to also be included</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>Location.position</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="near-distance", path="Location.position", description="A distance quantity to limit the near search to locations within a specific distance\n\nRequires the near parameter to also be included", type="quantity" )
-  public static final String SP_NEAR_DISTANCE = "near-distance";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>near-distance</b>
-   * <p>
-   * Description: <b>A distance quantity to limit the near search to locations within a specific distance
-
-Requires the near parameter to also be included</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>Location.position</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam NEAR_DISTANCE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_NEAR_DISTANCE);
 
  /**
    * Search parameter: <b>address</b>
@@ -2759,26 +2767,32 @@ Requires the near parameter to also be included</b><br>
  /**
    * Search parameter: <b>near</b>
    * <p>
-   * Description: <b>The coordinates expressed as [latitude]:[longitude] (using the WGS84 datum, see notes) to find locations near to (servers may search using a square rather than a circle for efficiency)
+   * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
+If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
+
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
 
 Requires the near-distance parameter to be provided also</b><br>
-   * Type: <b>token</b><br>
+   * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="near", path="Location.position", description="The coordinates expressed as [latitude]:[longitude] (using the WGS84 datum, see notes) to find locations near to (servers may search using a square rather than a circle for efficiency)\n\nRequires the near-distance parameter to be provided also", type="token" )
+  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.\n\nRequires the near-distance parameter to be provided also", type="special" )
   public static final String SP_NEAR = "near";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>near</b>
    * <p>
-   * Description: <b>The coordinates expressed as [latitude]:[longitude] (using the WGS84 datum, see notes) to find locations near to (servers may search using a square rather than a circle for efficiency)
+   * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
+If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
+
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
 
 Requires the near-distance parameter to be provided also</b><br>
-   * Type: <b>token</b><br>
+   * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam NEAR = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NEAR);
+  public static final ca.uhn.fhir.rest.gclient.SpecialClientParam NEAR = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_NEAR);
 
  /**
    * Search parameter: <b>address-city</b>

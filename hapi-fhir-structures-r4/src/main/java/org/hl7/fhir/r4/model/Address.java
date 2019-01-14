@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -61,11 +61,11 @@ public class Address extends Type implements ICompositeType {
          */
         TEMP, 
         /**
-         * This address is no longer in use (or was never correct, but retained for records).
+         * This address is no longer in use (or was never correct but retained for records).
          */
         OLD, 
         /**
-         * An address to be used to send bills, invoices, receipts etc
+         * An address to be used to send bills, invoices, receipts etc.
          */
         BILLING, 
         /**
@@ -115,8 +115,8 @@ public class Address extends Type implements ICompositeType {
             case HOME: return "A communication address at a home.";
             case WORK: return "An office address. First choice for business related contacts during business hours.";
             case TEMP: return "A temporary address. The period can provide more detailed information.";
-            case OLD: return "This address is no longer in use (or was never correct, but retained for records).";
-            case BILLING: return "An address to be used to send bills, invoices, receipts etc";
+            case OLD: return "This address is no longer in use (or was never correct but retained for records).";
+            case BILLING: return "An address to be used to send bills, invoices, receipts etc.";
             default: return "?";
           }
         }
@@ -312,10 +312,10 @@ public class Address extends Type implements ICompositeType {
     protected Enumeration<AddressType> type;
 
     /**
-     * A full text representation of the address.
+     * Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.
      */
     @Child(name = "text", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Text representation of the address", formalDefinition="A full text representation of the address." )
+    @Description(shortDefinition="Text representation of the address", formalDefinition="Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts." )
     protected StringType text;
 
     /**
@@ -326,10 +326,10 @@ public class Address extends Type implements ICompositeType {
     protected List<StringType> line;
 
     /**
-     * The name of the city, town, village or other community or delivery center.
+     * The name of the city, town, suburb, village or other community or delivery center.
      */
     @Child(name = "city", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of city, town etc.", formalDefinition="The name of the city, town, village or other community or delivery center." )
+    @Description(shortDefinition="Name of city, town etc.", formalDefinition="The name of the city, town, suburb, village or other community or delivery center." )
     protected StringType city;
 
     /**
@@ -340,10 +340,10 @@ public class Address extends Type implements ICompositeType {
     protected StringType district;
 
     /**
-     * Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).
+     * Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).
      */
     @Child(name = "state", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Sub-unit of country (abbreviations ok)", formalDefinition="Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes)." )
+    @Description(shortDefinition="Sub-unit of country (abbreviations ok)", formalDefinition="Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes)." )
     protected StringType state;
 
     /**
@@ -475,7 +475,7 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @return {@link #text} (A full text representation of the address.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+     * @return {@link #text} (Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
      */
     public StringType getTextElement() { 
       if (this.text == null)
@@ -495,7 +495,7 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @param value {@link #text} (A full text representation of the address.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+     * @param value {@link #text} (Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
      */
     public Address setTextElement(StringType value) { 
       this.text = value;
@@ -503,14 +503,14 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @return A full text representation of the address.
+     * @return Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.
      */
     public String getText() { 
       return this.text == null ? null : this.text.getValue();
     }
 
     /**
-     * @param value A full text representation of the address.
+     * @param value Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.
      */
     public Address setText(String value) { 
       if (Utilities.noString(value))
@@ -579,13 +579,13 @@ public class Address extends Type implements ICompositeType {
       if (this.line == null)
         return false;
       for (StringType v : this.line)
-        if (v.equals(value)) // string
+        if (v.getValue().equals(value)) // string
           return true;
       return false;
     }
 
     /**
-     * @return {@link #city} (The name of the city, town, village or other community or delivery center.). This is the underlying object with id, value and extensions. The accessor "getCity" gives direct access to the value
+     * @return {@link #city} (The name of the city, town, suburb, village or other community or delivery center.). This is the underlying object with id, value and extensions. The accessor "getCity" gives direct access to the value
      */
     public StringType getCityElement() { 
       if (this.city == null)
@@ -605,7 +605,7 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @param value {@link #city} (The name of the city, town, village or other community or delivery center.). This is the underlying object with id, value and extensions. The accessor "getCity" gives direct access to the value
+     * @param value {@link #city} (The name of the city, town, suburb, village or other community or delivery center.). This is the underlying object with id, value and extensions. The accessor "getCity" gives direct access to the value
      */
     public Address setCityElement(StringType value) { 
       this.city = value;
@@ -613,14 +613,14 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @return The name of the city, town, village or other community or delivery center.
+     * @return The name of the city, town, suburb, village or other community or delivery center.
      */
     public String getCity() { 
       return this.city == null ? null : this.city.getValue();
     }
 
     /**
-     * @param value The name of the city, town, village or other community or delivery center.
+     * @param value The name of the city, town, suburb, village or other community or delivery center.
      */
     public Address setCity(String value) { 
       if (Utilities.noString(value))
@@ -683,7 +683,7 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @return {@link #state} (Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).). This is the underlying object with id, value and extensions. The accessor "getState" gives direct access to the value
+     * @return {@link #state} (Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).). This is the underlying object with id, value and extensions. The accessor "getState" gives direct access to the value
      */
     public StringType getStateElement() { 
       if (this.state == null)
@@ -703,7 +703,7 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @param value {@link #state} (Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).). This is the underlying object with id, value and extensions. The accessor "getState" gives direct access to the value
+     * @param value {@link #state} (Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).). This is the underlying object with id, value and extensions. The accessor "getState" gives direct access to the value
      */
     public Address setStateElement(StringType value) { 
       this.state = value;
@@ -711,14 +711,14 @@ public class Address extends Type implements ICompositeType {
     }
 
     /**
-     * @return Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).
+     * @return Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).
      */
     public String getState() { 
       return this.state == null ? null : this.state.getValue();
     }
 
     /**
-     * @param value Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).
+     * @param value Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).
      */
     public Address setState(String value) { 
       if (Utilities.noString(value))
@@ -857,11 +857,11 @@ public class Address extends Type implements ICompositeType {
         super.listChildren(children);
         children.add(new Property("use", "code", "The purpose of this address.", 0, 1, use));
         children.add(new Property("type", "code", "Distinguishes between physical addresses (those you can visit) and mailing addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.", 0, 1, type));
-        children.add(new Property("text", "string", "A full text representation of the address.", 0, 1, text));
+        children.add(new Property("text", "string", "Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.", 0, 1, text));
         children.add(new Property("line", "string", "This component contains the house number, apartment number, street name, street direction,  P.O. Box number, delivery hints, and similar address information.", 0, java.lang.Integer.MAX_VALUE, line));
-        children.add(new Property("city", "string", "The name of the city, town, village or other community or delivery center.", 0, 1, city));
+        children.add(new Property("city", "string", "The name of the city, town, suburb, village or other community or delivery center.", 0, 1, city));
         children.add(new Property("district", "string", "The name of the administrative area (county).", 0, 1, district));
-        children.add(new Property("state", "string", "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).", 0, 1, state));
+        children.add(new Property("state", "string", "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).", 0, 1, state));
         children.add(new Property("postalCode", "string", "A postal code designating a region defined by the postal service.", 0, 1, postalCode));
         children.add(new Property("country", "string", "Country - a nation as commonly understood or generally accepted.", 0, 1, country));
         children.add(new Property("period", "Period", "Time period when address was/is in use.", 0, 1, period));
@@ -872,11 +872,11 @@ public class Address extends Type implements ICompositeType {
         switch (_hash) {
         case 116103: /*use*/  return new Property("use", "code", "The purpose of this address.", 0, 1, use);
         case 3575610: /*type*/  return new Property("type", "code", "Distinguishes between physical addresses (those you can visit) and mailing addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.", 0, 1, type);
-        case 3556653: /*text*/  return new Property("text", "string", "A full text representation of the address.", 0, 1, text);
+        case 3556653: /*text*/  return new Property("text", "string", "Specifies the entire address as it should be displayed e.g. on a postal label. This may be provided instead of or as well as the specific parts.", 0, 1, text);
         case 3321844: /*line*/  return new Property("line", "string", "This component contains the house number, apartment number, street name, street direction,  P.O. Box number, delivery hints, and similar address information.", 0, java.lang.Integer.MAX_VALUE, line);
-        case 3053931: /*city*/  return new Property("city", "string", "The name of the city, town, village or other community or delivery center.", 0, 1, city);
+        case 3053931: /*city*/  return new Property("city", "string", "The name of the city, town, suburb, village or other community or delivery center.", 0, 1, city);
         case 288961422: /*district*/  return new Property("district", "string", "The name of the administrative area (county).", 0, 1, district);
-        case 109757585: /*state*/  return new Property("state", "string", "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).", 0, 1, state);
+        case 109757585: /*state*/  return new Property("state", "string", "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (e.g. US 2 letter state codes).", 0, 1, state);
         case 2011152728: /*postalCode*/  return new Property("postalCode", "string", "A postal code designating a region defined by the postal service.", 0, 1, postalCode);
         case 957831062: /*country*/  return new Property("country", "string", "Country - a nation as commonly understood or generally accepted.", 0, 1, country);
         case -991726143: /*period*/  return new Property("period", "Period", "Time period when address was/is in use.", 0, 1, period);

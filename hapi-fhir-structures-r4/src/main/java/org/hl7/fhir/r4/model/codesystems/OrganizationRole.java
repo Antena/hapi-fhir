@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -45,7 +45,7 @@ public enum OrganizationRole {
          */
         AGENCY, 
         /**
-         * An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc
+         * An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc.
          */
         RESEARCH, 
         /**
@@ -65,7 +65,7 @@ public enum OrganizationRole {
          */
         HIE_HIO, 
         /**
-         * A type of non-ownership relationship between entities (encompassess partnerships, collaboration, joint ventures, etc.)
+         * A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)
          */
         MEMBER, 
         /**
@@ -113,12 +113,12 @@ public enum OrganizationRole {
           switch (this) {
             case PROVIDER: return "";
             case AGENCY: return "An organization such as a public health agency, community/social services provider, etc.";
-            case RESEARCH: return "An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc";
+            case RESEARCH: return "An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc.";
             case PAYER: return "An organization providing reimbursement, payment, or related services";
             case DIAGNOSTICS: return "An organization providing diagnostic testing/laboratory services";
             case SUPPLIER: return "An organization that provides medical supplies (e.g. medical devices, equipment, pharmaceutical products, etc.)";
             case HIE_HIO: return "An organization that facilitates electronic clinical data exchange between entities";
-            case MEMBER: return "A type of non-ownership relationship between entities (encompassess partnerships, collaboration, joint ventures, etc.)";
+            case MEMBER: return "A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)";
             default: return "?";
           }
         }

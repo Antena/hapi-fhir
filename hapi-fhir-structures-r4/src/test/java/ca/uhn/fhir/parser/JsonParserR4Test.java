@@ -1,6 +1,7 @@
 package ca.uhn.fhir.parser;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.api.Constants;
 import ca.uhn.fhir.util.TestUtil;
 import com.google.common.collect.Sets;
 import org.apache.commons.io.IOUtils;
@@ -34,6 +35,20 @@ public class JsonParserR4Test {
 		p.addName().addGiven("GIVEN");
 		b.addEntry().setResource(p);
 		return b;
+	}
+
+	@Test
+	public void testDontStripVersions() {
+		FhirContext ctx = FhirContext.forR4();
+		ctx.getParserOptions().setDontStripVersionsFromReferencesAtPaths("QuestionnaireResponse.questionnaire");
+
+		QuestionnaireResponse qr = new QuestionnaireResponse();
+		qr.getQuestionnaireElement().setValueAsString("Questionnaire/123/_history/456");
+
+		String output = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(qr);
+		ourLog.info(output);
+
+		assertThat(output, containsString("\"Questionnaire/123/_history/456\""));
 	}
 
 	/**
@@ -88,6 +103,129 @@ public class JsonParserR4Test {
 
 	}
 
+	/*
+	 * See #814
+	 */
+	@Test
+	public void testDuplicateContainedResourcesNotOutputtedTwiceWithManualIdsAndManualAddition() {
+		MedicationDispense md = new MedicationDispense();
+
+		MedicationRequest mr = new MedicationRequest();
+		mr.setId("#MR");
+		md.addAuthorizingPrescription().setResource(mr);
+
+		Medication med = new Medication();
+		med.setId("#MED");
+
+		Reference medRef = new Reference();
+		medRef.setReference("#MED");
+		md.setMedication(medRef);
+		mr.setMedication(medRef);
+
+		md.getContained().add(mr);
+		md.getContained().add(med);
+
+		String encoded = ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(md);
+		ourLog.info(encoded);
+
+		int idx = encoded.indexOf("\"Medication\"");
+		assertNotEquals(-1, idx);
+
+		idx = encoded.indexOf("\"Medication\"", idx + 1);
+		assertEquals(-1, idx);
+
+	}
+
+	@Test
+	public void testEncodeAndParseUnicodeCharacterInNarrative() {
+		Patient p = new Patient();
+		p.getText().getDiv().setValueAsString("<div>Copy © 1999</div>");
+		String encoded = ourCtx.newJsonParser().encodeResourceToString(p);
+		ourLog.info(encoded);
+
+		p = (Patient) ourCtx.newJsonParser().parseResource(encoded);
+		assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">Copy &copy; 1999</div>", p.getText().getDivAsString());
+	}
+
+	@Test
+	public void testEncodeResourceWithMixedManualAndAutomaticContainedResourcesLocalFirst() {
+
+		Observation obs = new Observation();
+
+		Patient pt = new Patient();
+		pt.setId("#1");
+		pt.addName().setFamily("FAM");
+		obs.getSubject().setReference("#1");
+		obs.getContained().add(pt);
+
+		Encounter enc = new Encounter();
+		enc.setStatus(Encounter.EncounterStatus.ARRIVED);
+		obs.getEncounter().setResource(enc);
+
+		String encoded = ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obs);
+		ourLog.info(encoded);
+
+		obs = ourCtx.newJsonParser().parseResource(Observation.class, encoded);
+		assertEquals("#1", obs.getContained().get(0).getId());
+		assertEquals("#2", obs.getContained().get(1).getId());
+
+		pt = (Patient) obs.getSubject().getResource();
+		assertEquals("FAM", pt.getNameFirstRep().getFamily());
+
+		enc = (Encounter) obs.getEncounter().getResource();
+		assertEquals(Encounter.EncounterStatus.ARRIVED, enc.getStatus());
+	}
+
+	@Test
+	public void testEncodeResourceWithMixedManualAndAutomaticContainedResourcesLocalLast() {
+
+		Observation obs = new Observation();
+
+		Patient pt = new Patient();
+		pt.addName().setFamily("FAM");
+		obs.getSubject().setResource(pt);
+
+		Encounter enc = new Encounter();
+		enc.setId("#1");
+		enc.setStatus(Encounter.EncounterStatus.ARRIVED);
+		obs.getEncounter().setReference("#1");
+		obs.getContained().add(enc);
+
+		String encoded = ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(obs);
+		ourLog.info(encoded);
+
+		obs = ourCtx.newJsonParser().parseResource(Observation.class, encoded);
+		assertEquals("#1", obs.getContained().get(0).getId());
+		assertEquals("#2", obs.getContained().get(1).getId());
+
+		pt = (Patient) obs.getSubject().getResource();
+		assertEquals("FAM", pt.getNameFirstRep().getFamily());
+
+		enc = (Encounter) obs.getEncounter().getResource();
+		assertEquals(Encounter.EncounterStatus.ARRIVED, enc.getStatus());
+	}
+
+	@Test
+	public void testEncodeResourceWithMixedManualAndAutomaticContainedResourcesLocalLast2() {
+
+		MedicationRequest mr = new MedicationRequest();
+		Practitioner pract = new Practitioner().setActive(true);
+		mr.getRequester().setResource(pract);
+
+		String encoded = ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(mr);
+		ourLog.info(encoded);
+		mr = ourCtx.newJsonParser().parseResource(MedicationRequest.class, encoded);
+
+		mr.setMedication(new Reference(new Medication().setStatus(Medication.MedicationStatus.ACTIVE)));
+		encoded = ourCtx.newJsonParser().setPrettyPrint(true).encodeResourceToString(mr);
+		ourLog.info(encoded);
+		mr = ourCtx.newJsonParser().parseResource(MedicationRequest.class, encoded);
+
+		assertEquals("#2", mr.getContained().get(0).getId());
+		assertEquals("#1", mr.getContained().get(1).getId());
+
+	}
+
 	@Test
 	public void testExcludeNothing() {
 		IParser parser = ourCtx.newJsonParser().setPrettyPrint(true);
@@ -109,7 +247,7 @@ public class JsonParserR4Test {
 		b = parser.parseResource(Bundle.class, encoded);
 
 		assertEquals("BUNDLEID", b.getIdElement().getIdPart());
-		assertEquals("Patient/PATIENTID", ((Patient) b.getEntry().get(0).getResource()).getId());
+		assertEquals("Patient/PATIENTID", b.getEntry().get(0).getResource().getId());
 		assertEquals("GIVEN", ((Patient) b.getEntry().get(0).getResource()).getNameFirstRep().getGivenAsSingleString());
 	}
 
@@ -135,7 +273,7 @@ public class JsonParserR4Test {
 		b = parser.parseResource(Bundle.class, encoded);
 
 		assertNotEquals("BUNDLEID", b.getIdElement().getIdPart());
-		assertEquals("Patient/PATIENTID", ((Patient) b.getEntry().get(0).getResource()).getId());
+		assertEquals("Patient/PATIENTID", b.getEntry().get(0).getResource().getId());
 		assertEquals("GIVEN", ((Patient) b.getEntry().get(0).getResource()).getNameFirstRep().getGivenAsSingleString());
 	}
 
@@ -161,7 +299,7 @@ public class JsonParserR4Test {
 		b = parser.parseResource(Bundle.class, encoded);
 
 		assertNotEquals("BUNDLEID", b.getIdElement().getIdPart());
-		assertNotEquals("Patient/PATIENTID", ((Patient) b.getEntry().get(0).getResource()).getId());
+		assertNotEquals("Patient/PATIENTID", b.getEntry().get(0).getResource().getId());
 		assertEquals("GIVEN", ((Patient) b.getEntry().get(0).getResource()).getNameFirstRep().getGivenAsSingleString());
 	}
 
@@ -224,7 +362,7 @@ public class JsonParserR4Test {
 
 	@Test
 	public void testParseExtensionOnPrimitive() throws IOException {
-		String input = IOUtils.toString(JsonParserR4Test.class.getResourceAsStream("/extension-on-line.txt"));
+		String input = IOUtils.toString(JsonParserR4Test.class.getResourceAsStream("/extension-on-line.txt"), Constants.CHARSET_UTF8);
 		IParser parser = ourCtx.newJsonParser().setPrettyPrint(true);
 		Patient pt = parser.parseResource(Patient.class, input);
 

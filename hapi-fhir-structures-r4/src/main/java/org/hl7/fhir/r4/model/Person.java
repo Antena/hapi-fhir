@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -46,7 +46,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Demographics and administrative information about a person independent of a specific health-related context.
  */
-@ResourceDef(name="Person", profile="http://hl7.org/fhir/Profile/Person")
+@ResourceDef(name="Person", profile="http://hl7.org/fhir/StructureDefinition/Person")
 public class Person extends DomainResource {
 
     public enum IdentityAssuranceLevel {
@@ -188,10 +188,10 @@ public class Person extends DomainResource {
         protected Resource targetTarget;
 
         /**
-         * Level of assurance that this link is actually associated with the target resource.
+         * Level of assurance that this link is associated with the target resource.
          */
         @Child(name = "assurance", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="level1 | level2 | level3 | level4", formalDefinition="Level of assurance that this link is actually associated with the target resource." )
+        @Description(shortDefinition="level1 | level2 | level3 | level4", formalDefinition="Level of assurance that this link is associated with the target resource." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/identity-assuranceLevel")
         protected Enumeration<IdentityAssuranceLevel> assurance;
 
@@ -252,7 +252,7 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @return {@link #assurance} (Level of assurance that this link is actually associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
+         * @return {@link #assurance} (Level of assurance that this link is associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
          */
         public Enumeration<IdentityAssuranceLevel> getAssuranceElement() { 
           if (this.assurance == null)
@@ -272,7 +272,7 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @param value {@link #assurance} (Level of assurance that this link is actually associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
+         * @param value {@link #assurance} (Level of assurance that this link is associated with the target resource.). This is the underlying object with id, value and extensions. The accessor "getAssurance" gives direct access to the value
          */
         public PersonLinkComponent setAssuranceElement(Enumeration<IdentityAssuranceLevel> value) { 
           this.assurance = value;
@@ -280,14 +280,14 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @return Level of assurance that this link is actually associated with the target resource.
+         * @return Level of assurance that this link is associated with the target resource.
          */
         public IdentityAssuranceLevel getAssurance() { 
           return this.assurance == null ? null : this.assurance.getValue();
         }
 
         /**
-         * @param value Level of assurance that this link is actually associated with the target resource.
+         * @param value Level of assurance that this link is associated with the target resource.
          */
         public PersonLinkComponent setAssurance(IdentityAssuranceLevel value) { 
           if (value == null)
@@ -303,14 +303,14 @@ public class Person extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("target", "Reference(Patient|Practitioner|RelatedPerson|Person)", "The resource to which this actual person is associated.", 0, 1, target));
-          children.add(new Property("assurance", "code", "Level of assurance that this link is actually associated with the target resource.", 0, 1, assurance));
+          children.add(new Property("assurance", "code", "Level of assurance that this link is associated with the target resource.", 0, 1, assurance));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -880905839: /*target*/  return new Property("target", "Reference(Patient|Practitioner|RelatedPerson|Person)", "The resource to which this actual person is associated.", 0, 1, target);
-          case 1771900717: /*assurance*/  return new Property("assurance", "code", "Level of assurance that this link is actually associated with the target resource.", 0, 1, assurance);
+          case 1771900717: /*assurance*/  return new Property("assurance", "code", "Level of assurance that this link is associated with the target resource.", 0, 1, assurance);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1364,7 +1364,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="Person.link.target", description="The Person links to this Practitioner", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class } )
+  @SearchParamDefinition(name="practitioner", path="Person.link.target.where(resolve() is Practitioner)", description="The Person links to this Practitioner", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner") }, target={Practitioner.class } )
   public static final String SP_PRACTITIONER = "practitioner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
@@ -1416,7 +1416,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="relatedperson", path="Person.link.target", description="The Person links to this RelatedPerson", type="reference", target={RelatedPerson.class } )
+  @SearchParamDefinition(name="relatedperson", path="Person.link.target.where(resolve() is RelatedPerson)", description="The Person links to this RelatedPerson", type="reference", target={RelatedPerson.class } )
   public static final String SP_RELATEDPERSON = "relatedperson";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>relatedperson</b>
@@ -1522,7 +1522,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Person.link.target", description="The Person links to this Patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Person.link.target.where(resolve() is Patient)", description="The Person links to this Patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

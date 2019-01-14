@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 import java.util.*;
 
@@ -45,20 +45,20 @@ import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A record of a request for a medication, substance or device used in the healthcare setting.
  */
-@ResourceDef(name="SupplyRequest", profile="http://hl7.org/fhir/Profile/SupplyRequest")
+@ResourceDef(name="SupplyRequest", profile="http://hl7.org/fhir/StructureDefinition/SupplyRequest")
 public class SupplyRequest extends DomainResource {
 
     public enum SupplyRequestStatus {
         /**
-         * The request has been created but is not yet complete or ready for action
+         * The request has been created but is not yet complete or ready for action.
          */
         DRAFT, 
         /**
-         * The request is ready to be acted upon
+         * The request is ready to be acted upon.
          */
         ACTIVE, 
         /**
-         * The authorization/request to act has been temporarily withdrawn but is expected to resume in the future
+         * The authorization/request to act has been temporarily withdrawn but is expected to resume in the future.
          */
         SUSPENDED, 
         /**
@@ -66,15 +66,15 @@ public class SupplyRequest extends DomainResource {
          */
         CANCELLED, 
         /**
-         * Activity against the request has been sufficiently completed to the satisfaction of the requester
+         * Activity against the request has been sufficiently completed to the satisfaction of the requester.
          */
         COMPLETED, 
         /**
-         * This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".)
+         * This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
          */
         ENTEREDINERROR, 
         /**
-         * The authoring system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply, it's just not known which one.
+         * The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.
          */
         UNKNOWN, 
         /**
@@ -129,13 +129,13 @@ public class SupplyRequest extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case DRAFT: return "The request has been created but is not yet complete or ready for action";
-            case ACTIVE: return "The request is ready to be acted upon";
-            case SUSPENDED: return "The authorization/request to act has been temporarily withdrawn but is expected to resume in the future";
+            case DRAFT: return "The request has been created but is not yet complete or ready for action.";
+            case ACTIVE: return "The request is ready to be acted upon.";
+            case SUSPENDED: return "The authorization/request to act has been temporarily withdrawn but is expected to resume in the future.";
             case CANCELLED: return "The authorization/request to act has been terminated prior to the full completion of the intended actions.  No further activity should occur.";
-            case COMPLETED: return "Activity against the request has been sufficiently completed to the satisfaction of the requester";
-            case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".)";
-            case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case COMPLETED: return "Activity against the request has been sufficiently completed to the satisfaction of the requester.";
+            case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
             default: return "?";
           }
         }
@@ -222,19 +222,19 @@ public class SupplyRequest extends DomainResource {
 
     public enum RequestPriority {
         /**
-         * The request has normal priority
+         * The request has normal priority.
          */
         ROUTINE, 
         /**
-         * The request should be actioned promptly - higher priority than routine
+         * The request should be actioned promptly - higher priority than routine.
          */
         URGENT, 
         /**
-         * The request should be actioned as soon as possible - higher priority than urgent
+         * The request should be actioned as soon as possible - higher priority than urgent.
          */
         ASAP, 
         /**
-         * The request should be actioned immediately - highest possible priority.  E.g. an emergency
+         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
          */
         STAT, 
         /**
@@ -277,10 +277,10 @@ public class SupplyRequest extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case ROUTINE: return "The request has normal priority";
-            case URGENT: return "The request should be actioned promptly - higher priority than routine";
-            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent";
-            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency";
+            case ROUTINE: return "The request has normal priority.";
+            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
+            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
+            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
             default: return "?";
           }
         }
@@ -404,52 +404,60 @@ public class SupplyRequest extends DomainResource {
          * @return {@link #value} (The value of the device detail.)
          */
         public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
           if (!(this.value instanceof CodeableConcept))
             throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
           return (CodeableConcept) this.value;
         }
 
         public boolean hasValueCodeableConcept() { 
-          return this.value instanceof CodeableConcept;
+          return this != null && this.value instanceof CodeableConcept;
         }
 
         /**
          * @return {@link #value} (The value of the device detail.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
           if (!(this.value instanceof Quantity))
             throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
           return (Quantity) this.value;
         }
 
         public boolean hasValueQuantity() { 
-          return this.value instanceof Quantity;
+          return this != null && this.value instanceof Quantity;
         }
 
         /**
          * @return {@link #value} (The value of the device detail.)
          */
         public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
           if (!(this.value instanceof Range))
             throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
           return (Range) this.value;
         }
 
         public boolean hasValueRange() { 
-          return this.value instanceof Range;
+          return this != null && this.value instanceof Range;
         }
 
         /**
          * @return {@link #value} (The value of the device detail.)
          */
         public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
           if (!(this.value instanceof BooleanType))
             throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
           return (BooleanType) this.value;
         }
 
         public boolean hasValueBooleanType() { 
-          return this.value instanceof BooleanType;
+          return this != null && this.value instanceof BooleanType;
         }
 
         public boolean hasValue() { 
@@ -460,6 +468,8 @@ public class SupplyRequest extends DomainResource {
          * @param value {@link #value} (The value of the device detail.)
          */
         public SupplyRequestParameterComponent setValue(Type value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof BooleanType))
+            throw new Error("Not the right type for SupplyRequest.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -607,11 +617,11 @@ public class SupplyRequest extends DomainResource {
   }
 
     /**
-     * Unique identifier for this supply request.
+     * Business identifiers assigned to this SupplyRequest by the author and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Unique identifier", formalDefinition="Unique identifier for this supply request." )
-    protected Identifier identifier;
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Business Identifier for SupplyRequest", formalDefinition="Business identifiers assigned to this SupplyRequest by the author and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server." )
+    protected List<Identifier> identifier;
 
     /**
      * Status of the supply request.
@@ -698,21 +708,21 @@ public class SupplyRequest extends DomainResource {
 
 
     /**
-     * Why the supply item was requested.
+     * The reason why the supply item was requested.
      */
     @Child(name = "reasonCode", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Why the supply item was requested", formalDefinition="Why the supply item was requested." )
+    @Description(shortDefinition="The reason why the supply item was requested", formalDefinition="The reason why the supply item was requested." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supplyrequest-reason")
     protected List<CodeableConcept> reasonCode;
 
     /**
-     * Why the supply item was requested.
+     * The reason why the supply item was requested.
      */
     @Child(name = "reasonReference", type = {Condition.class, Observation.class, DiagnosticReport.class, DocumentReference.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Why the supply item was requested", formalDefinition="Why the supply item was requested." )
+    @Description(shortDefinition="The reason why the supply item was requested", formalDefinition="The reason why the supply item was requested." )
     protected List<Reference> reasonReference;
     /**
-     * The actual objects that are the target of the reference (Why the supply item was requested.)
+     * The actual objects that are the target of the reference (The reason why the supply item was requested.)
      */
     protected List<Resource> reasonReferenceTarget;
 
@@ -741,7 +751,7 @@ public class SupplyRequest extends DomainResource {
      */
     protected Resource deliverToTarget;
 
-    private static final long serialVersionUID = -1922364955L;
+    private static final long serialVersionUID = 1456312151L;
 
   /**
    * Constructor
@@ -760,27 +770,56 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Unique identifier for this supply request.)
+     * @return {@link #identifier} (Business identifiers assigned to this SupplyRequest by the author and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.)
      */
-    public Identifier getIdentifier() { 
+    public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SupplyRequest.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
+        this.identifier = new ArrayList<Identifier>();
       return this.identifier;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SupplyRequest setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
+      return this;
+    }
+
     public boolean hasIdentifier() { 
-      return this.identifier != null && !this.identifier.isEmpty();
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    public SupplyRequest addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #identifier} (Unique identifier for this supply request.)
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist
      */
-    public SupplyRequest setIdentifier(Identifier value) { 
-      this.identifier = value;
-      return this;
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
+      }
+      return getIdentifier().get(0);
     }
 
     /**
@@ -916,26 +955,30 @@ public class SupplyRequest extends DomainResource {
      * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
     public CodeableConcept getItemCodeableConcept() throws FHIRException { 
+      if (this.item == null)
+        this.item = new CodeableConcept();
       if (!(this.item instanceof CodeableConcept))
         throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.item.getClass().getName()+" was encountered");
       return (CodeableConcept) this.item;
     }
 
     public boolean hasItemCodeableConcept() { 
-      return this.item instanceof CodeableConcept;
+      return this != null && this.item instanceof CodeableConcept;
     }
 
     /**
      * @return {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
     public Reference getItemReference() throws FHIRException { 
+      if (this.item == null)
+        this.item = new Reference();
       if (!(this.item instanceof Reference))
         throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.item.getClass().getName()+" was encountered");
       return (Reference) this.item;
     }
 
     public boolean hasItemReference() { 
-      return this.item instanceof Reference;
+      return this != null && this.item instanceof Reference;
     }
 
     public boolean hasItem() { 
@@ -946,6 +989,8 @@ public class SupplyRequest extends DomainResource {
      * @param value {@link #item} (The item that is requested to be supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
      */
     public SupplyRequest setItem(Type value) { 
+      if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
+        throw new Error("Not the right type for SupplyRequest.item[x]: "+value.fhirType());
       this.item = value;
       return this;
     }
@@ -1038,39 +1083,45 @@ public class SupplyRequest extends DomainResource {
      * @return {@link #occurrence} (When the request should be fulfilled.)
      */
     public DateTimeType getOccurrenceDateTimeType() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new DateTimeType();
       if (!(this.occurrence instanceof DateTimeType))
         throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.occurrence.getClass().getName()+" was encountered");
       return (DateTimeType) this.occurrence;
     }
 
     public boolean hasOccurrenceDateTimeType() { 
-      return this.occurrence instanceof DateTimeType;
+      return this != null && this.occurrence instanceof DateTimeType;
     }
 
     /**
      * @return {@link #occurrence} (When the request should be fulfilled.)
      */
     public Period getOccurrencePeriod() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Period();
       if (!(this.occurrence instanceof Period))
         throw new FHIRException("Type mismatch: the type Period was expected, but "+this.occurrence.getClass().getName()+" was encountered");
       return (Period) this.occurrence;
     }
 
     public boolean hasOccurrencePeriod() { 
-      return this.occurrence instanceof Period;
+      return this != null && this.occurrence instanceof Period;
     }
 
     /**
      * @return {@link #occurrence} (When the request should be fulfilled.)
      */
     public Timing getOccurrenceTiming() throws FHIRException { 
+      if (this.occurrence == null)
+        this.occurrence = new Timing();
       if (!(this.occurrence instanceof Timing))
         throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.occurrence.getClass().getName()+" was encountered");
       return (Timing) this.occurrence;
     }
 
     public boolean hasOccurrenceTiming() { 
-      return this.occurrence instanceof Timing;
+      return this != null && this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1081,6 +1132,8 @@ public class SupplyRequest extends DomainResource {
      * @param value {@link #occurrence} (When the request should be fulfilled.)
      */
     public SupplyRequest setOccurrence(Type value) { 
+      if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Timing))
+        throw new Error("Not the right type for SupplyRequest.occurrence[x]: "+value.fhirType());
       this.occurrence = value;
       return this;
     }
@@ -1237,7 +1290,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (Why the supply item was requested.)
+     * @return {@link #reasonCode} (The reason why the supply item was requested.)
      */
     public List<CodeableConcept> getReasonCode() { 
       if (this.reasonCode == null)
@@ -1290,7 +1343,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonReference} (Why the supply item was requested.)
+     * @return {@link #reasonReference} (The reason why the supply item was requested.)
      */
     public List<Reference> getReasonReference() { 
       if (this.reasonReference == null)
@@ -1432,7 +1485,7 @@ public class SupplyRequest extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Unique identifier for this supply request.", 0, 1, identifier));
+        children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this SupplyRequest by the author and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Status of the supply request.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.", 0, 1, category));
         children.add(new Property("priority", "code", "Indicates how quickly this SupplyRequest should be addressed with respect to other requests.", 0, 1, priority));
@@ -1443,8 +1496,8 @@ public class SupplyRequest extends DomainResource {
         children.add(new Property("authoredOn", "dateTime", "When the request was made.", 0, 1, authoredOn));
         children.add(new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, practitioner, etc. who initiated the request.", 0, 1, requester));
         children.add(new Property("supplier", "Reference(Organization|HealthcareService)", "Who is intended to fulfill the request.", 0, java.lang.Integer.MAX_VALUE, supplier));
-        children.add(new Property("reasonCode", "CodeableConcept", "Why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
+        children.add(new Property("reasonCode", "CodeableConcept", "The reason why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode));
+        children.add(new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "The reason why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonReference));
         children.add(new Property("deliverFrom", "Reference(Organization|Location)", "Where the supply is expected to come from.", 0, 1, deliverFrom));
         children.add(new Property("deliverTo", "Reference(Organization|Location|Patient)", "Where the supply is destined to go.", 0, 1, deliverTo));
       }
@@ -1452,7 +1505,7 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier for this supply request.", 0, 1, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this SupplyRequest by the author and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "Status of the supply request.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Category of supply, e.g.  central, non-stock, etc. This is used to support work flows associated with the supply process.", 0, 1, category);
         case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly this SupplyRequest should be addressed with respect to other requests.", 0, 1, priority);
@@ -1470,8 +1523,8 @@ public class SupplyRequest extends DomainResource {
         case -1500852503: /*authoredOn*/  return new Property("authoredOn", "dateTime", "When the request was made.", 0, 1, authoredOn);
         case 693933948: /*requester*/  return new Property("requester", "Reference(Practitioner|PractitionerRole|Organization|Patient|RelatedPerson|Device)", "The device, practitioner, etc. who initiated the request.", 0, 1, requester);
         case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Organization|HealthcareService)", "Who is intended to fulfill the request.", 0, java.lang.Integer.MAX_VALUE, supplier);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "Why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "Why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
+        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "The reason why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonCode);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Condition|Observation|DiagnosticReport|DocumentReference)", "The reason why the supply item was requested.", 0, java.lang.Integer.MAX_VALUE, reasonReference);
         case -949323153: /*deliverFrom*/  return new Property("deliverFrom", "Reference(Organization|Location)", "Where the supply is expected to come from.", 0, 1, deliverFrom);
         case -242327936: /*deliverTo*/  return new Property("deliverTo", "Reference(Organization|Location|Patient)", "Where the supply is destined to go.", 0, 1, deliverTo);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1482,7 +1535,7 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SupplyRequestStatus>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
@@ -1506,7 +1559,7 @@ public class SupplyRequest extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = castToIdentifier(value); // Identifier
+          this.getIdentifier().add(castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
           value = new SupplyRequestStatusEnumFactory().fromType(castToCode(value));
@@ -1560,7 +1613,7 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = castToIdentifier(value); // Identifier
+          this.getIdentifier().add(castToIdentifier(value));
         } else if (name.equals("status")) {
           value = new SupplyRequestStatusEnumFactory().fromType(castToCode(value));
           this.status = (Enumeration) value; // Enumeration<SupplyRequestStatus>
@@ -1599,7 +1652,7 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier(); 
+        case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return getCategory(); 
         case -1165461084:  return getPriorityElement();
@@ -1647,8 +1700,7 @@ public class SupplyRequest extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+          return addIdentifier();
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type SupplyRequest.status");
@@ -1723,7 +1775,11 @@ public class SupplyRequest extends DomainResource {
       public SupplyRequest copy() {
         SupplyRequest dst = new SupplyRequest();
         copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         dst.status = status == null ? null : status.copy();
         dst.category = category == null ? null : category.copy();
         dst.priority = priority == null ? null : priority.copy();
@@ -1806,7 +1862,7 @@ public class SupplyRequest extends DomainResource {
    * Path: <b>SupplyRequest.requester</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="requester", path="SupplyRequest.requester", description="Individual making the request", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="requester", path="SupplyRequest.requester", description="Individual making the request", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_REQUESTER = "requester";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>requester</b>
@@ -1847,22 +1903,48 @@ public class SupplyRequest extends DomainResource {
  /**
    * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>Unique identifier</b><br>
+   * Description: <b>Business Identifier for SupplyRequest</b><br>
    * Type: <b>token</b><br>
    * Path: <b>SupplyRequest.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="SupplyRequest.identifier", description="Unique identifier", type="token" )
+  @SearchParamDefinition(name="identifier", path="SupplyRequest.identifier", description="Business Identifier for SupplyRequest", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>Unique identifier</b><br>
+   * Description: <b>Business Identifier for SupplyRequest</b><br>
    * Type: <b>token</b><br>
    * Path: <b>SupplyRequest.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The destination of the supply</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>SupplyRequest.deliverTo</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="SupplyRequest.deliverTo", description="The destination of the supply", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Patient") }, target={Location.class, Organization.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The destination of the supply</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>SupplyRequest.deliverTo</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>SupplyRequest:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("SupplyRequest:subject").toLocked();
 
  /**
    * Search parameter: <b>supplier</b>

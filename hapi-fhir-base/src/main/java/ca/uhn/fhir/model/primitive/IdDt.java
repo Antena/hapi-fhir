@@ -23,7 +23,7 @@ import static org.apache.commons.lang3.StringUtils.*;
  * #%L
  * HAPI FHIR - Core Library
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -619,12 +619,14 @@ public class IdDt extends UriDt implements /*IPrimitiveDatatype<String>, */IIdTy
 	/**
 	 * Creates a new instance of this ID which is identical, but refers to the specific version of this resource ID noted by theVersion.
 	 *
-	 * @param theVersion The actual version string, e.g. "1"
+	 * @param theVersion The actual version string, e.g. "1". If theVersion is blank or null, returns the same as {@link #toVersionless()}}
 	 * @return A new instance of IdDt which is identical, but refers to the specific version of this resource ID noted by theVersion.
 	 */
 	@Override
 	public IdDt withVersion(String theVersion) {
-		Validate.notBlank(theVersion, "Version may not be null or empty");
+		if (isBlank(theVersion)) {
+			return toVersionless();
+		}
 
 		if (isLocal() || isUrn()) {
 			return new IdDt(getValueAsString());

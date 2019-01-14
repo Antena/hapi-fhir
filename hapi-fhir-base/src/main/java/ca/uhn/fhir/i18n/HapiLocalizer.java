@@ -7,12 +7,13 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 /*
  * #%L
  * HAPI FHIR - Core Library
  * %%
- * Copyright (C) 2014 - 2018 University Health Network
+ * Copyright (C) 2014 - 2019 University Health Network
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,6 +71,7 @@ public class HapiLocalizer {
 		for (ResourceBundle nextBundle : myBundle) {
 			if (nextBundle.containsKey(theQualifiedKey)) {
 				formatString = nextBundle.getString(theQualifiedKey);
+				formatString = trim(formatString);
 			}
 			if (isNotBlank(formatString)) {
 				break;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r4.model.codesystems;
   
 */
 
-// Generated on Tue, Jan 9, 2018 14:51-0500 for FHIR v3.2.0
+// Generated on Thu, Dec 27, 2018 10:06-0500 for FHIR v4.0.0
 
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -45,7 +45,7 @@ public enum MedicationAdminCategory {
          */
         OUTPATIENT, 
         /**
-         * Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc)
+         * Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc.)
          */
         COMMUNITY, 
         /**
@@ -72,13 +72,13 @@ public enum MedicationAdminCategory {
           }
         }
         public String getSystem() {
-          return "http://hl7.org/fhir/medication-admin-category";
+          return "http://terminology.hl7.org/CodeSystem/medication-admin-category";
         }
         public String getDefinition() {
           switch (this) {
             case INPATIENT: return "Includes administrations in an inpatient or acute care setting";
             case OUTPATIENT: return "Includes administrations in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
-            case COMMUNITY: return "Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc)";
+            case COMMUNITY: return "Includes administrations by the patient in their home (this would include long term care or nursing homes, hospices, etc.)";
             default: return "?";
           }
         }
